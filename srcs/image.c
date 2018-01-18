@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/18 11:14:44 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/18 18:59:00 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,7 @@
 #include <stdio.h>
 #include "image.h"
 
-static void			get_gradient(t_image *img, t_color *color, int i)
-{
-	int				c;
-
-	c = i % 5;
-	if (i == 0 || i == 1000)
-		set_color(img, color, (int8_t[3]){0, 0, 0});
-	else if (c == 0)
-		set_color(img, color, (int8_t[3]){138, 41, 70});
-	else if (c == 1)
-		set_color(img, color, (int8_t[3]){102, 41, 70});
-	else if (c == 2)
-		set_color(img, color, (int8_t[3]){182, 158, 99});
-	else if (c == 3)
-		set_color(img, color, (int8_t[3]){71, 227, 205});
-	else if (c == 4)
-		set_color(img, color, (int8_t[3]){188, 168, 139});
-}
+long long			g_mid = 0;
 
 static void			mandelbrot_pixel(t_image *img, t_cpx *point, t_color *color)
 {
@@ -51,7 +34,11 @@ static void			mandelbrot_pixel(t_image *img, t_cpx *point, t_color *color)
 		x = tmp;
 		++i;
 	}
-	get_gradient(img, color, i);
+	g_mid += i;
+	if (i == 1000)
+		set_color(img, color, (int8_t[3]){0, 0, 0});
+	else
+		get_gradient(img, img->ctx->palette, color, (double)i / 1000.0);
 }
 
 static void			draw_frac(t_image *img)
@@ -61,6 +48,7 @@ static void			draw_frac(t_image *img)
 	double			x;
 	double			dim[2];
 	t_color			color;
+	long long		num = 0;
 
 	y = .0;
 	dim[0] = (double)img->ctx->width;
@@ -70,12 +58,35 @@ static void			draw_frac(t_image *img)
 		x = .0;
 		while (x < dim[0])
 		{
-			point = (t_cpx){.re = (3.5 * x) / dim[0] - 2.5, .im = (2 * y) / dim[1] - 1};
+			point = (t_cpx){.re = (3.5 * x) / dim[0] - 2.5, .im = (2 * y) /
+				dim[1] - 1};
 			mandelbrot_pixel(img, &point, &color);
 			img_pixel_put(img, x, y, &color);
 			++x;
+			++num;
 		}
 		++y;
+	}
+	printf("middle value: %lli\n", g_mid / num);
+}
+
+static void			put_gradient_bar(t_image *img, t_mlx_context *ctx)
+{
+	uint32_t		x;
+	t_color			color;
+	uint32_t		y;
+
+	x = 0;
+	while (x < ctx->width)
+	{
+		y = ctx->height - 20;
+		get_gradient(img, ctx->palette, &color, (double)x / (double)ctx->width);
+		while (y < ctx->height)
+		{
+			img_pixel_put(img, x, y, &color);
+			++y;
+		}
+		++x;
 	}
 }
 
@@ -91,6 +102,7 @@ void				put_fractol_render(t_mlx_context *ctx)
 	if (img.bpp < 32)
 		quit_fractol(ctx, "fractol: unsupported image format.");
 	draw_frac(&img);
+	put_gradient_bar(&img, ctx);
 	mlx_put_image_to_window(ctx->mlx, ctx->win, ctx->img, 0, 0);
 }
 

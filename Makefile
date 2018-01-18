@@ -8,10 +8,13 @@ SRCS_NAMES =	colors.c	\
 				events.c	\
 				image.c		\
 				main.c		\
+				palette.c	\
 
 OBJS_NAMES = $(SRCS_NAMES:.c=.o)
 
-INCS_NAMES =
+INCS_NAMES =	events.c	\
+				fractol.h	\
+				image.h		\
 
 SRCS = $(addprefix $(SRC_PATH)/, $(SRCS_NAMES))
 OBJS = $(addprefix $(OBJ_PATH)/, $(OBJS_NAMES))
