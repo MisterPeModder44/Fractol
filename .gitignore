@@ -1,0 +1,8 @@
+*.o
+libft.a
+libmlx.a
+fractol
+*.exe
+.syntastic_c_config
+.syntastic_cpp_config
+norm.log
