@@ -4,7 +4,10 @@ SRC_PATH := srcs
 OBJ_PATH := bin
 INC_PATH := includes
 
-SRCS_NAMES =
+SRCS_NAMES =	colors.c	\
+				events.c	\
+				image.c		\
+				main.c		\
 
 OBJS_NAMES = $(SRCS_NAMES:.c=.o)
 
