@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/18 18:59:00 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/20 18:20:37 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,16 @@ static void			draw_frac(t_image *img)
 static void			put_gradient_bar(t_image *img, t_mlx_context *ctx)
 {
 	uint32_t		x;
+	t_color			black;
 	t_color			color;
 	uint32_t		y;
 
 	x = 0;
+	black = (t_color){.value = 0x00000000};
 	while (x < ctx->width)
 	{
 		y = ctx->height - 20;
+		img_pixel_put(img, x, y - 1, &black);
 		get_gradient(img, ctx->palette, &color, (double)x / (double)ctx->width);
 		while (y < ctx->height)
 		{

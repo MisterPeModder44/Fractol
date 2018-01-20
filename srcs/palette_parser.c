@@ -6,14 +6,13 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 12:00:48 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 18:15:24 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/20 19:00:56 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <libft_base/stringft.h>
 #include "palette.h"
-#include <stdio.h>
 
 static void			del_color_point(t_color_point *point)
 {
@@ -32,8 +31,6 @@ static t_list		*make_palette_lst(char ***tab, size_t len)
 	{
 		if (!(tmp = get_color_point((*tab)[i])))
 		{
-			printf("break\n");
-			fflush(stdout);
 			if (lst)
 				ft_lstdel(&lst, (void (*)(void *, size_t))&del_color_point);
 			if (*tab)
@@ -52,7 +49,6 @@ static t_list		*get_palette_colors(const char *format, uint32_t *dim)
 	size_t			len;
 	t_list			*lst;
 
-	printf("format: %s\n", format);
 	if (!format)
 		return (NULL);
 	tab = ft_strsplit(format, ';');
@@ -103,14 +99,17 @@ t_palette			*parse_palette(const char *format)
 	uint32_t		dim[2];
 	t_palette		*palette;
 
-	if (!(lst = get_palette_colors(format, dim)) ||
-			!val_palette(lst, dim[1], dim[0]))
-	{
-		printf("Invalid palette!\n");
+	if (!(lst = get_palette_colors(format, dim)))
 		return (NULL);
+	palette = NULL;
+	if (val_palette(lst, dim[1], dim[0]))
+	{
+		sort_color_list(&lst);
+		if (((t_color_point *)lst->content)->pos == 0)
+		{
+			palette = make_palette(lst, dim[1], dim[0]);
+			ft_lstdel(&lst, (void (*)(void *, size_t))&del_color_point);
+		}
 	}
-	sort_color_list(&lst);
-	palette = make_palette(lst, dim[1], dim[0]);
-	ft_lstdel(&lst, (void (*)(void *, size_t))&del_color_point);
 	return (palette);
 }

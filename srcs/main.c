@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:32:01 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 18:14:43 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/20 19:12:38 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static void		init_window(t_mlx_context *ctx)
 {
 	ctx->mlx = mlx_init();
 	ctx->img = NULL;
-	ctx->width = 1600;
-	ctx->height = 900;
+	ctx->width = 2560;
+	ctx->height = 1400;
 	ctx->win = mlx_new_window(ctx->mlx, ctx->width, ctx->height,
 			"- Fractol -");
 	mlx_key_hook(ctx->win, (int (*)())&on_key_released, ctx);
@@ -47,9 +47,9 @@ int				main(int ac, char **av)
 	t_mlx_context	ctx;
 
 	if (ac != 2)
-		quit_fractol(NULL, "wrong number of arguments!");
+		quit_fractol(NULL, "fractol: wrong number of arguments!");
 	if (!(ctx.palette = parse_palette(av[1])))
-		quit_fractol(NULL, "couldn't create palette");
+		quit_fractol(NULL, "fractol: couldn't create palette");
 	init_window(&ctx);
 	put_fractol_render(&ctx);
 	mlx_loop(ctx.mlx);

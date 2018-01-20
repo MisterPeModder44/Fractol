@@ -6,13 +6,15 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/20 17:09:08 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 18:15:31 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/20 19:37:42 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "palette.h"
 #include <stdio.h>
+
+#define SCALE_POS(x, m, s) ((uint32_t)((double)x / (double)m * (double)s))
 
 t_bool				val_palette(t_list *colors, uint32_t size, uint32_t mhue)
 {
@@ -67,15 +69,21 @@ static void			make_gradient(t_palette *pal, t_color_point *p1,
 		t_color_point *p2)
 {
 	uint32_t		i;
+	uint32_t		end;
 	double			size;
 
-	i = p1->pos;
-	size = p2->pos - p1->pos;
-	while (i < p2->pos)
+	i = SCALE_POS(p1->pos, pal->max_hue, pal->size);
+	end = SCALE_POS(p2->pos, pal->max_hue, pal->size);
+	size = end - i;
+	printf("==\nsize: %.1f\n", size);
+	printf("color 1: 0x%.2hhx%.2hhx%.2hhx\n", p1->r, p1->g, p1->b);
+	printf("color 2: 0x%.2hhx%.2hhx%.2hhx\n", p2->r, p2->g, p2->b);
+	while (i < end)
 	{
 		pal->reds[i] = (p2->r - p1->r) * ((double)i / size) + p1->r;
 		pal->greens[i] = (p2->g - p1->g) * ((double)i / size) + p1->g;
 		pal->blues[i] = (p2->b - p1->b) * ((double)i / size) + p1->b;
+		printf("color at %u: 0x%.2hhx%.2hhx%.2hhx\n", i, pal->reds[i], pal->greens[i], pal->blues[i]);
 		++i;
 	}
 }
