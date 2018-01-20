@@ -4,15 +4,18 @@ SRC_PATH := srcs
 OBJ_PATH := bin
 INC_PATH := includes
 
-SRCS_NAMES =	colors.c	\
-				events.c	\
-				image.c		\
-				main.c		\
-				palette.c	\
+SRCS_NAMES =	colors.c			\
+				color_point.c		\
+				events.c			\
+				image.c				\
+				main.c				\
+				palette.c			\
+				palette_parser.c	\
+				palette_size.c		\
 
 OBJS_NAMES = $(SRCS_NAMES:.c=.o)
 
-INCS_NAMES =	events.c	\
+INCS_NAMES =	events.h	\
 				fractol.h	\
 				image.h		\
 
@@ -26,7 +29,7 @@ MLX = $(MLX_PATH)/libmlx.a
 LIBS := -lm -L$(MLX_PATH) -lmlx -Llibft -lft
 
 CC = gcc
-CFLAGS = --std=c99 -Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra
 FRAMEWORKS = -framework OpenGL -framework AppKit
 CPPFLAGS = -I$(INC_PATH) -Ilibft/includes -I$(MLX_PATH)
 RM = rm -f
@@ -58,6 +61,7 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 clean:
 	@$(RM) $(NORM_LOG)
 	@$(RM) $(OBJS)
+	@$(RM) -r $(NAME).dSYM
 	@make -C libft fclean > /dev/null
 	@rmdir $(OBJ_PATH) 2> /dev/null || true
 	@printf "\033[33mRemoved \033[93mobject files!\033[0m\n"
