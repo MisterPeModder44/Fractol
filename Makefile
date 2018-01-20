@@ -10,6 +10,7 @@ SRCS_NAMES =	colors.c			\
 				image.c				\
 				main.c				\
 				palette.c			\
+				palette_maker.c	\
 				palette_parser.c	\
 				palette_size.c		\
 

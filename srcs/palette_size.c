@@ -6,13 +6,13 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/20 16:51:10 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 16:53:22 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/20 17:10:45 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft_base/stringft.h>
 #include <libft_base/character.h>
-#include "fractol.h"
+#include "palette.h"
 
 void				ignore_ws(int *i, const char *str)
 {

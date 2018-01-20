@@ -6,13 +6,13 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 12:00:48 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 16:53:26 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/20 18:15:24 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <libft_base/stringft.h>
-#include "fractol.h"
+#include "palette.h"
 #include <stdio.h>
 
 static void			del_color_point(t_color_point *point)
@@ -71,27 +71,46 @@ static t_list		*get_palette_colors(const char *format, uint32_t *dim)
 	return (lst);
 }
 
+void				sort_color_list(t_list **begin_list)
+{
+	t_list	**curr;
+	t_list	*tmp;
+	t_list	*tmp2;
+
+	curr = begin_list;
+	if (!*begin_list)
+		return ;
+	while (*curr && (*curr)->next)
+	{
+		if (((t_color_point *)(*curr)->content)->pos >
+				((t_color_point *)(*curr)->next->content)->pos)
+		{
+			tmp = *curr;
+			tmp2 = (*curr)->next;
+			(*curr)->next = (*curr)->next->next;
+			*curr = tmp2;
+			(*curr)->next = tmp;
+			curr = begin_list;
+		}
+		else
+			curr = &(*curr)->next;
+	}
+}
+
 t_palette			*parse_palette(const char *format)
 {
 	t_list			*lst;
-	t_list			*l;
 	uint32_t		dim[2];
-	t_color_point	*colo;
+	t_palette		*palette;
 
-	if (!(lst = get_palette_colors(format, dim)))
+	if (!(lst = get_palette_colors(format, dim)) ||
+			!val_palette(lst, dim[1], dim[0]))
 	{
 		printf("Invalid palette!\n");
 		return (NULL);
 	}
-	l = lst;
-	printf("palette max hue: %d\npalette size: %d\n", dim[0], dim[1]);
-	while (l)
-	{
-		colo = l->content;
-		printf("color point: value=0x%.2hhX%.2hhX%.2hhX, type=%d, pos=%u\n",
-				colo->r, colo->g, colo->b, colo->type, colo->pos);
-		l = l->next;
-	}
+	sort_color_list(&lst);
+	palette = make_palette(lst, dim[1], dim[0]);
 	ft_lstdel(&lst, (void (*)(void *, size_t))&del_color_point);
-	return (NULL);
+	return (palette);
 }
