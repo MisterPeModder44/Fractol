@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 10:51:31 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/18 18:59:35 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/27 16:52:29 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # define X11_DESTROYNOTIFY 17
 
 # define ESC_KEY 53
+# define PLUS_KEY 69
+# define MINUS_KEY 78
 
 int				on_key_released(int key, t_mlx_context *ctx);
 int				on_close_window(t_mlx_context *ctx);

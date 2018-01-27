@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:32:01 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 16:44:59 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/27 17:24:45 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void			quit_fractol(t_mlx_context *ctx, const char *reason)
 static void		init_window(t_mlx_context *ctx)
 {
 	ctx->mlx = mlx_init();
-	ctx->width = 2560;
-	ctx->height = 1400;
+	ctx->width = 500;
+	ctx->height = 400;
 	add_window(ctx, new_window(0, 0, ctx->width, ctx->height));
 	ctx->win = mlx_new_window(ctx->mlx, ctx->width, ctx->height,
 			"- Fractol -");
@@ -79,10 +79,10 @@ int				main(int ac, char **av)
 	init_window(&ctx);
 	mandelbrot.draw = &draw_fractal;
 	mandelbrot.palette = ctx.palette;
-	mandelbrot.x_max = (double)ctx.width - (double)ctx.width / 4.;
-	mandelbrot.y_max = (double)ctx.height - (double)ctx.height / 4.;
-	mandelbrot.x_min = (double)ctx.width / 4.;
-	mandelbrot.y_min = (double)ctx.height / 4.;
+	mandelbrot.x_max = ctx.width;
+	mandelbrot.y_max = ctx.height;
+	mandelbrot.x_min = 0;
+	mandelbrot.y_min = 0;
 	win_add_extra_data(ctx.windows->content, &mandelbrot, NULL);
 	draw_window(ctx.windows->content, &ctx, NULL,
 			(void (*)(t_window *, void *))mandelbrot.draw);
