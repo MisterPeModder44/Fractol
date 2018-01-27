@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:32:01 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 15:27:56 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/27 16:44:59 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ static void		del_window_lst(t_mlx_context *ctx)
 		free(win->img);
 		if (win->extra && win->del_extra)
 			(*win->del_extra)(win->extra);
-		else
-			free(win->extra);
 		free(win);
 		tmp = curr->next;
 		free(curr);
@@ -72,14 +70,22 @@ static void		init_window(t_mlx_context *ctx)
 int				main(int ac, char **av)
 {
 	t_mlx_context	ctx;
+	t_fractal		mandelbrot;
 
 	if (ac != 2)
 		quit_fractol(NULL, "fractol: wrong number of arguments!");
 	if (!(ctx.palette = parse_palette(av[1])))
 		quit_fractol(NULL, "fractol: couldn't create palette");
 	init_window(&ctx);
-	draw_window(ctx.windows->content, &ctx, ctx.palette,
-			(void (*)(t_window *, void *))&draw_fractal);
+	mandelbrot.draw = &draw_fractal;
+	mandelbrot.palette = ctx.palette;
+	mandelbrot.x_max = (double)ctx.width - (double)ctx.width / 4.;
+	mandelbrot.y_max = (double)ctx.height - (double)ctx.height / 4.;
+	mandelbrot.x_min = (double)ctx.width / 4.;
+	mandelbrot.y_min = (double)ctx.height / 4.;
+	win_add_extra_data(ctx.windows->content, &mandelbrot, NULL);
+	draw_window(ctx.windows->content, &ctx, NULL,
+			(void (*)(t_window *, void *))mandelbrot.draw);
 	mlx_loop(ctx.mlx);
 	return (0);
 }

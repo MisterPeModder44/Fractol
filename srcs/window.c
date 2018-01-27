@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 13:42:48 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 15:28:37 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/27 16:11:03 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,9 @@ t_window		*new_window(int32_t x, int32_t y, uint32_t w, uint32_t h)
 
 void			win_add_extra_data(t_window *win, void *dat, void (*f)(void *))
 {
-	if (win->extra)
+	if (win->extra && win->del_extra)
 	{
-		if (win->del_extra)
-			(*win->del_extra)(win->extra);
-		else
-			free(win->extra);
+		(*win->del_extra)(win->extra);
 		win->extra = NULL;
 	}
 	win->extra = dat;

@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 14:53:51 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/27 16:35:14 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void			mandelbrot_pixel(t_image *img, t_cpx *point, t_color *color,
 		*color = get_gradient(img, pal, (double)i / 1000.0);
 }
 
-static void			put_gradient_bar(t_window *win, t_palette *pal)
+static void			put_gradient_bar(t_window *win)
 {
 	uint32_t		x;
 	t_color			black;
@@ -52,7 +52,8 @@ static void			put_gradient_bar(t_window *win, t_palette *pal)
 	{
 		y = win->height - 20;
 		win_pixel_put(win, x, y - 1, black);
-		color = get_gradient(win->img, pal, (double)x / (double)win->width);
+		color = get_gradient(win->img, ((t_fractal *)win->extra)->palette,
+				(double)x / (double)win->width);
 		while (y < win->height)
 		{
 			win_pixel_put(win, x, y, color);
@@ -62,29 +63,41 @@ static void			put_gradient_bar(t_window *win, t_palette *pal)
 	}
 }
 
-void				draw_fractal(t_window *win, t_palette *pal)
+static void			scale_coords(t_cpx *p, t_window *win, double x, double y)
+{
+	t_fractal		*frac;
+	double			tx;
+	double			ty;
+
+	frac = win->extra;
+	tx = x / (double)win->width * (frac->x_max - frac->x_min) + frac->x_min;
+	ty = y / (double)win->height * (frac->y_max - frac->y_min) + frac->y_min;
+	*p = (t_cpx){.re = (3.5 * tx) / frac->x_max - 2.5, .im = (2 * ty) / frac->y_max - 1};
+}
+
+void				draw_fractal(t_window *win)
 {
 	t_cpx			point;
-	double			y;
-	double			x;
-	double			dim[2];
+	uint32_t		y;
+	uint32_t		x;
 	t_color			color;
 
 	y = .0;
-	dim[0] = (double)win->width;
-	dim[1] = (double)win->height;
-	while (y < dim[1])
+	//dim[0] = win->width;
+	//dim[1] = win->height;
+	while (y < win->height)
 	{
 		x = .0;
-		while (x < dim[0])
+		while (x < win->width)
 		{
-			point = (t_cpx){.re = (3.5 * x) / dim[0] - 2.5, .im = (2 * y) /
-				dim[1] - 1};
-			mandelbrot_pixel(win->img, &point, &color, pal);
+			scale_coords(&point, win, x, y);
+			//point = (t_cpx){.re = (3.5 * x) / dim[0] - 2.5, .im = (2 * y) /
+			//	dim[1] - 1};
+			mandelbrot_pixel(win->img, &point, &color, ((t_fractal *)win->extra)->palette);
 			win_pixel_put(win, x, y, color);
 			++x;
 		}
 		++y;
 	}
-	put_gradient_bar(win, pal);
+	put_gradient_bar(win);
 }
