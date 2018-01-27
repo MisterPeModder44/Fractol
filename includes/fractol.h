@@ -6,14 +6,16 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:20:17 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 17:10:13 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/27 15:29:46 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
+# include <libft_base/list.h>
 # include "palette.h"
+# include "image.h"
 
 typedef struct		s_mlx_context
 {
@@ -21,11 +23,31 @@ typedef struct		s_mlx_context
 	void			*win;
 	uint32_t		width;
 	uint32_t		height;
-	void			*img;
+	t_list			*windows;
 	t_palette		*palette;
 }					t_mlx_context;
 
-void				put_fractol_render(t_mlx_context *ctx);
+typedef struct		s_window
+{
+	int32_t			pos_x;
+	int32_t			pos_y;
+	uint32_t		width;
+	uint32_t		height;
+	t_image			*img;
+	void			*extra;
+	void			(*del_extra)(void *);
+}					t_window;
+
+void				draw_fractal(t_window *win, t_palette *pal);
 void				quit_fractol(t_mlx_context *ctx, const char *reason);
+
+t_window			*new_window(int32_t x, int32_t y, uint32_t w, uint32_t h);
+void				win_add_extra_data(t_window *win, void *dat,
+		void (*f)(void *));
+void				draw_window(t_window *win, t_mlx_context *ctx, void *extra,
+		void (*draw)(t_window *, void *));
+void				win_pixel_put(t_window *win, int32_t x, int32_t y,
+		t_color col);
+t_bool				add_window(t_mlx_context *ctx, t_window *win);
 
 #endif

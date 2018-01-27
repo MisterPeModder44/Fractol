@@ -4,16 +4,17 @@ SRC_PATH := srcs
 OBJ_PATH := bin
 INC_PATH := includes
 
-SRCS_NAMES =	colors.c			\
-				color_point.c		\
+SRCS_NAMES =	color_point.c		\
+				colors.c			\
 				events.c			\
 				image.c				\
 				interpolate.c		\
 				main.c				\
 				palette.c			\
-				palette_maker.c	\
+				palette_maker.c		\
 				palette_parser.c	\
 				palette_size.c		\
+				window.c			\
 
 OBJS_NAMES = $(SRCS_NAMES:.c=.o)
 
