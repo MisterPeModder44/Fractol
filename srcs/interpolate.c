@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colors.c                                           :+:      :+:    :+:   */
+/*   interpolate.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/18 08:22:24 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 13:20:31 by yguaye           ###   ########.fr       */
+/*   Created: 2018/01/27 13:23:18 by yguaye            #+#    #+#             */
+/*   Updated: 2018/01/27 13:23:39 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "image.h"
+#include <stdint.h>
 
-t_color				set_color(t_image *img, int8_t r, int8_t g, int8_t b)
+int8_t				interpolate(uint8_t c1, uint8_t c2, double hue)
 {
-	t_color			c;
-
-	if (img->endian)
-	{
-		c.bytes[0] = 0;
-		c.bytes[1] = r;
-		c.bytes[2] = g;
-		c.bytes[3] = b;
-	}
-	else
-	{
-		c.bytes[3] = 0;
-		c.bytes[2] = r;
-		c.bytes[1] = g;
-		c.bytes[0] = b;
-	}
-	return (c);
+	if (c2 < c1)
+		return ((int8_t)(-((int32_t)((c1 - c2) * hue + c2)) + 255));
+	return ((c2 - c1) * hue + c1);
 }

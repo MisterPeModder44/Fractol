@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/20 17:01:52 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 17:59:29 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/27 13:24:57 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,7 @@ t_palette			*make_palette(t_list *colors, uint32_t size, uint32_t mhue);
 
 t_palette			*parse_palette(const char *format);
 void				del_palette(t_palette **palette);
+
+int8_t				interpolate(uint8_t c1, uint8_t c2, double hue);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 14:41:28 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 18:10:55 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/27 13:15:23 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,11 @@ void				del_palette(t_palette **palette)
 	palette = NULL;
 }
 
-t_color				*get_gradient(t_image *img, t_palette *p, t_color *c,
+t_color				get_gradient(t_image *img, t_palette *p,
 		double amount)
 {
 	uint32_t		pos;
 
 	pos = (uint32_t)(amount * p->size);
-	set_color(img, c, (int8_t[3]){p->reds[pos], p->greens[pos], p->blues[pos]});
-	return (c);
+	return (set_color(img, p->reds[pos], p->greens[pos], p->blues[pos]));
 }

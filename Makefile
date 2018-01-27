@@ -8,6 +8,7 @@ SRCS_NAMES =	colors.c			\
 				color_point.c		\
 				events.c			\
 				image.c				\
+				interpolate.c		\
 				main.c				\
 				palette.c			\
 				palette_maker.c	\

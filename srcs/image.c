@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 18:20:37 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/27 13:21:22 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <libft_math/complex.h>
 #include <stdio.h>
 #include "image.h"
-
-long long			g_mid = 0;
 
 static void			mandelbrot_pixel(t_image *img, t_cpx *point, t_color *color)
 {
@@ -34,11 +32,10 @@ static void			mandelbrot_pixel(t_image *img, t_cpx *point, t_color *color)
 		x = tmp;
 		++i;
 	}
-	g_mid += i;
 	if (i == 1000)
-		set_color(img, color, (int8_t[3]){0, 0, 0});
+		*color = set_color(img, 0, 0, 0);
 	else
-		get_gradient(img, img->ctx->palette, color, (double)i / 1000.0);
+		*color = get_gradient(img, img->ctx->palette, (double)i / 1000.0);
 }
 
 static void			draw_frac(t_image *img)
@@ -48,7 +45,6 @@ static void			draw_frac(t_image *img)
 	double			x;
 	double			dim[2];
 	t_color			color;
-	long long		num = 0;
 
 	y = .0;
 	dim[0] = (double)img->ctx->width;
@@ -61,13 +57,11 @@ static void			draw_frac(t_image *img)
 			point = (t_cpx){.re = (3.5 * x) / dim[0] - 2.5, .im = (2 * y) /
 				dim[1] - 1};
 			mandelbrot_pixel(img, &point, &color);
-			img_pixel_put(img, x, y, &color);
+			img_pixel_put(img, x, y, color);
 			++x;
-			++num;
 		}
 		++y;
 	}
-	printf("middle value: %lli\n", g_mid / num);
 }
 
 static void			put_gradient_bar(t_image *img, t_mlx_context *ctx)
@@ -82,11 +76,11 @@ static void			put_gradient_bar(t_image *img, t_mlx_context *ctx)
 	while (x < ctx->width)
 	{
 		y = ctx->height - 20;
-		img_pixel_put(img, x, y - 1, &black);
-		get_gradient(img, ctx->palette, &color, (double)x / (double)ctx->width);
+		img_pixel_put(img, x, y - 1, black);
+		color = get_gradient(img, ctx->palette, (double)x / (double)ctx->width);
 		while (y < ctx->height)
 		{
-			img_pixel_put(img, x, y, &color);
+			img_pixel_put(img, x, y, color);
 			++y;
 		}
 		++x;
@@ -110,7 +104,7 @@ void				put_fractol_render(t_mlx_context *ctx)
 }
 
 void				img_pixel_put(t_image *img, const int x, const int y,
-		const t_color *color)
+		const t_color color)
 {
 	int				pos;
 
@@ -118,8 +112,8 @@ void				img_pixel_put(t_image *img, const int x, const int y,
 			(uint32_t)x >= img->ctx->width || (uint32_t)y >= img->ctx->height)
 		return ;
 	pos = (x + y * img->ctx->width) * img->bpp / 8;
-	img->data[pos] = color->bytes[0];
-	img->data[pos + 1] = color->bytes[1];
-	img->data[pos + 2] = color->bytes[2];
-	img->data[pos + 3] = color->bytes[3];
+	img->data[pos] = color.bytes[0];
+	img->data[pos + 1] = color.bytes[1];
+	img->data[pos + 2] = color.bytes[2];
+	img->data[pos + 3] = color.bytes[3];
 }
