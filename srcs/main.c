@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:32:01 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 17:24:45 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/28 08:36:43 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,18 @@ void			quit_fractol(t_mlx_context *ctx, const char *reason)
 static void		init_window(t_mlx_context *ctx)
 {
 	ctx->mlx = mlx_init();
-	ctx->width = 500;
-	ctx->height = 400;
-	add_window(ctx, new_window(0, 0, ctx->width, ctx->height));
+	ctx->width = 1600;
+	ctx->height = 900;
+	ctx->mouse_x = .5;
+	ctx->mouse_y = .5;
+	add_window(ctx, init_w(ctx, new_window(0, 0, ctx->width, ctx->height)));
 	ctx->win = mlx_new_window(ctx->mlx, ctx->width, ctx->height,
 			"- Fractol -");
 	mlx_key_hook(ctx->win, (int (*)())&on_key_released, ctx);
 	mlx_hook(ctx->win, X11_DESTROYNOTIFY, X11_STRUCTURENOTIFYMASK,
 			(int (*)())&on_close_window, ctx);
+	mlx_hook(ctx->win, X11_MOTIONNOTIFY, 0,
+			(int (*)())&on_mouse_movement, ctx);
 }
 
 int				main(int ac, char **av)
@@ -84,7 +88,7 @@ int				main(int ac, char **av)
 	mandelbrot.x_min = 0;
 	mandelbrot.y_min = 0;
 	win_add_extra_data(ctx.windows->content, &mandelbrot, NULL);
-	draw_window(ctx.windows->content, &ctx, NULL,
+	draw_window(ctx.windows->content, NULL,
 			(void (*)(t_window *, void *))mandelbrot.draw);
 	mlx_loop(ctx.mlx);
 	return (0);

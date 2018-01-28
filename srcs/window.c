@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 13:42:48 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 16:11:03 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/28 08:30:43 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_window		*new_window(int32_t x, int32_t y, uint32_t w, uint32_t h)
 	if (!(win->img = (t_image *)malloc(sizeof(t_image))))
 		return (NULL);
 	win->img->img_ptr = NULL;
+	win->ctx = NULL;
 	return (win);
 }
 
@@ -43,22 +44,22 @@ void			win_add_extra_data(t_window *win, void *dat, void (*f)(void *))
 	win->del_extra = f;
 }
 
-void			draw_window(t_window *win, t_mlx_context *ctx, void *extra,
+void			draw_window(t_window *win, void *extra,
 		void (*draw)(t_window *, void *))
 {
 	t_image		*img;
 
 	img = win->img;
 	if (img->img_ptr)
-		mlx_destroy_image(ctx->mlx, img->img_ptr);
-	img->img_ptr = mlx_new_image(ctx->mlx, win->width, win->height);
+		mlx_destroy_image(win->ctx->mlx, img->img_ptr);
+	img->img_ptr = mlx_new_image(win->ctx->mlx, win->width, win->height);
 	img->data = mlx_get_data_addr(img->img_ptr, &img->bpp, &img->slen,
 			&img->endian);
 	if (img->bpp < 32)
-		quit_fractol(ctx, "fractol: unsupported image format.");
+		quit_fractol(win->ctx, "fractol: unsupported image format.");
 	draw(win, extra);
-	mlx_put_image_to_window(ctx->mlx, ctx->win, img->img_ptr, win->pos_x,
-			win->pos_y);
+	mlx_put_image_to_window(win->ctx->mlx, win->ctx->win, img->img_ptr,
+			win->pos_x, win->pos_y);
 }
 
 void			win_pixel_put(t_window *win, int32_t x, int32_t y, t_color col)

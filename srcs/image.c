@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 17:29:42 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/28 08:42:15 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include "fractol.h"
 
-static void			mandelbrot_pixel(t_image *img, t_cpx *point, t_color *color,
+static void			julia_mandelbrot(t_image *img, t_cpx *point, t_color *color,
 		t_palette *pal)
 {
 	double			x;
@@ -26,7 +26,7 @@ static void			mandelbrot_pixel(t_image *img, t_cpx *point, t_color *color,
 	x = .0;
 	y = .0;
 	i = 0;
-	while (x * x + y * y < 4 && i < 200)
+	while (x * x + y * y < 4 && i < MAX_ITER)
 	{
 		tmp = x * x - y * y + point->re;
 		y = 2 * x * y + point->im;
@@ -36,7 +36,7 @@ static void			mandelbrot_pixel(t_image *img, t_cpx *point, t_color *color,
 	if (i == 1000)
 		*color = set_color(img, 0, 0, 0);
 	else
-		*color = get_gradient(img, pal, (double)i / 200.0);
+		*color = get_gradient(img, pal, (double)i / MAX_ITER);
 }
 
 static void			put_gradient_bar(t_window *win)
@@ -68,10 +68,14 @@ static void			scale_coords(t_cpx *p, t_window *win, double x, double y)
 	t_fractal		*frac;
 	double			tx;
 	double			ty;
+	double			start_x;
+	double			start_y;
 
 	frac = win->extra;
-	tx = x / (double)win->width * (frac->x_max - frac->x_min) + frac->x_min;
-	ty = y / (double)win->height * (frac->y_max - frac->y_min) + frac->y_min;
+	start_x = frac->x_min * win->ctx->mouse_x;
+	start_y = frac->y_min * win->ctx->mouse_y;
+	tx = x / (double)win->width * (frac->x_max - frac->x_min) + start_x;
+	ty = y / (double)win->height * (frac->y_max - frac->y_min) + start_y;
 	*p = (t_cpx){.re = (3.5 * tx) / frac->x_max - 2.5, .im = (2 * ty) /
 		frac->y_max - 1};
 }
@@ -90,17 +94,12 @@ void				draw_fractal(t_window *win)
 		while (x < win->width)
 		{
 			scale_coords(&point, win, x, y);
-			mandelbrot_pixel(win->img, &point, &color, ((t_fractal *)win->extra)->palette);
+			julia_mandelbrot(win->img, &point, &color,
+					((t_fractal *)win->extra)->palette);
 			win_pixel_put(win, x, y, color);
 			++x;
 		}
 		++y;
 	}
 	put_gradient_bar(win);
-}
-
-void				draw_fwindow(t_list *win, t_mlx_context *ctx)
-{
-	draw_window(win->content, ctx, NULL, (void (*)(t_window *, void *))
-			((t_fractal *)((t_window *)win->content)->extra)->draw);
 }

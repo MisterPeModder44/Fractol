@@ -15,6 +15,7 @@ SRCS_NAMES =	color_point.c		\
 				palette_parser.c	\
 				palette_size.c		\
 				window.c			\
+				window2.c			\
 
 OBJS_NAMES = $(SRCS_NAMES:.c=.o)
 
