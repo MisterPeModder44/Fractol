@@ -10,10 +10,12 @@ SRCS_NAMES =	color_point.c		\
 				colors.c			\
 				events.c			\
 				image.c				\
+				init.c				\
 				interpolate.c		\
 				kargs.c				\
 				krun.c				\
 				main.c				\
+				mandel_julia.c		\
 				opencl_utils.c		\
 				palette.c			\
 				palette_maker.c		\
@@ -27,7 +29,8 @@ CL_SRCS_NAMES =	mandel_julia.cl
 OBJS_NAMES = $(SRCS_NAMES:.c=.o)
 CL_OBJS_NAMES = $(CL_SRCS_NAMES:.cl=.clbin)
 
-INCS_NAMES =	events.h	\
+INCS_NAMES =	clbin.h		\
+				events.h	\
 				fractol.h	\
 				image.h		\
 				palette.h	\

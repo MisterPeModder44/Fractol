@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:32:01 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/28 08:36:43 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/31 17:05:00 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <libft_base/io.h>
 #include "fractol.h"
-#include "events.h"
 
 static void		del_window_lst(t_mlx_context *ctx)
 {
@@ -47,6 +46,8 @@ void			quit_fractol(t_mlx_context *ctx, const char *reason)
 			del_window_lst(ctx);
 		if (ctx->palette)
 			del_palette(&ctx->palette);
+		if (ctx->cl_ctx)
+			shutdown_opencl(ctx->cl_ctx);
 		mlx_destroy_window(ctx->mlx, ctx->win);
 	}
 	if (reason)
@@ -54,28 +55,14 @@ void			quit_fractol(t_mlx_context *ctx, const char *reason)
 	exit(reason != NULL);
 }
 
-static void		init_window(t_mlx_context *ctx)
-{
-	ctx->mlx = mlx_init();
-	ctx->width = 1600;
-	ctx->height = 900;
-	ctx->mouse_x = .5;
-	ctx->mouse_y = .5;
-	add_window(ctx, init_w(ctx, new_window(0, 0, ctx->width, ctx->height)));
-	ctx->win = mlx_new_window(ctx->mlx, ctx->width, ctx->height,
-			"- Fractol -");
-	mlx_key_hook(ctx->win, (int (*)())&on_key_released, ctx);
-	mlx_hook(ctx->win, X11_DESTROYNOTIFY, X11_STRUCTURENOTIFYMASK,
-			(int (*)())&on_close_window, ctx);
-	mlx_hook(ctx->win, X11_MOTIONNOTIFY, 0,
-			(int (*)())&on_mouse_movement, ctx);
-}
-
 int				main(int ac, char **av)
 {
 	t_mlx_context	ctx;
+	t_opencl_ctx	cl_ctx;
 	t_fractal		mandelbrot;
 
+	ctx.cl_ctx = &cl_ctx;
+	load_opencl(&cl_ctx);
 	if (ac != 2)
 		quit_fractol(NULL, "fractol: wrong number of arguments!");
 	if (!(ctx.palette = parse_palette(av[1])))

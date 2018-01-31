@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 10:02:54 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/30 18:46:15 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/31 17:51:06 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void					add_karg(t_kargs *args, void *arg, size_t size,
 	a = args->argv[args->curr];
 	if ((args->argv[args->curr].host_mem = malloc(size)))
 	{
-		ft_memmove(args->argv[args->curr].host_mem, arg, size);
+		if (arg)
+			ft_memmove(args->argv[args->curr].host_mem, arg, size);
+		else
+			ft_bzero(args->argv[args->curr].host_mem, size);
 		if ((args->argv[args->curr].kern_mem = clCreateBuffer(ctx,
 						CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, size,
 						args->argv[args->curr].host_mem, &ret))

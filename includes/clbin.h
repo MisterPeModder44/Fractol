@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandel_julia.cl                                    :+:      :+:    :+:   */
+/*   clbin.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/31 11:05:51 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/31 17:53:59 by yguaye           ###   ########.fr       */
+/*   Created: 2018/01/31 16:44:31 by yguaye            #+#    #+#             */
+/*   Updated: 2018/01/31 17:35:59 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-kernel void			mandel_julia(global float2 *c, global int *i)
-{
-	private size_t	pos;
-	private double	tmp;
-	private float2	point;
+#ifndef CLBIN_H
+# define CLBIN_H
 
-	pos = get_global_id(0);
-	i[pos] = 0;
-	point.x = .0;
-	point.y = .0;
-	while (point.x * point.x + point.y * point.y < 4 && i[pos] < 1000)
-	{
-		tmp = point.x * point.x - point.y * point.y + c[pos].x;
-		point.y = 2 * point.x * point.y + c[pos].y;
-		point.x = tmp;
-		++i[pos];
-	}
-}
+# define CL_NUM_RUNS 1
+
+# define CL_BIN(NAME) "./bin/cl/"  NAME  ".cl"
+
+# define CL_JULIA "mandel_julia"
+# define CL_JULIA_ID 0
+
+#endif

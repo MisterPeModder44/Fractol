@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:20:17 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/28 08:35:53 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/31 18:15:48 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,17 @@
 # include <libft_base/list.h>
 # include "palette.h"
 # include "image.h"
+# include "ft_opencl.h"
 
 # define MAX_ITER 200.
 
+# define W_WIDTH 1600
+# define W_HEIGHT 900
+# define W_PIXELS W_WIDTH * W_HEIGHT
+
 typedef struct		s_mlx_context
 {
+	t_opencl_ctx	*cl_ctx;
 	void			*mlx;
 	void			*win;
 	uint32_t		width;
@@ -53,7 +59,15 @@ typedef struct		s_fractal
 	double			y_max;
 }					t_fractal;
 
-void				draw_fractal(t_window *win);
+typedef float		t_cpx[2];
+
+void				init_window(t_mlx_context *ctx);
+
+void				load_opencl(t_opencl_ctx *ctx);
+
+void				draw_fractal(t_window *win, t_opencl_ctx *ctx);
+
+void				julia_mandelbrot(t_cpx c, t_opencl_ctx *ctx);
 
 void				quit_fractol(t_mlx_context *ctx, const char *reason);
 

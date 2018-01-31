@@ -6,32 +6,33 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 16:16:02 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/31 16:21:37 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/31 17:49:18 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft_base/stringft.h>
 #include "ft_opencl.h"
 
-void			load_cl_program(t_opencl_ctx *ctx, const char *path)
+void			load_cl_program(t_opencl_ctx *ctx, const char *path,
+		size_t id)
 {
 	size_t				len;
 	cl_int				ret;
 
 	len = ft_strlen(path);
-	ctx->program = clCreateProgramWithBinary(ctx->context, 1, &ctx->device,
+	R_PRG(ctx, id) = clCreateProgramWithBinary(ctx->context, 1, &ctx->device,
 			&len, (const unsigned char **)&path, NULL, &ret);
 	check_status(ctx, "couldn't load program", ret);
-	ret = clBuildProgram(ctx->program, 1, &ctx->device, CLC_FLAG, NULL, NULL);
+	ret = clBuildProgram(R_PRG(ctx, id), 1, &ctx->device, CLC_FLAG, NULL, NULL);
 	check_status(ctx, "couldn't build program", ret);
 }
 
-void			load_kernel(t_opencl_ctx *ctx, cl_program program,
-		const char *name, cl_kernel *kernel)
+void			load_kernel(t_opencl_ctx *ctx,
+		const char *name, size_t id)
 {
 	cl_int				ret;
 
-	*kernel = clCreateKernel(program, name, &ret);
+	R_KRN(ctx, id) = clCreateKernel(R_PRG(ctx, id), name, &ret);
 	check_status(ctx, "couldn't load kernel", ret);
 }
 
