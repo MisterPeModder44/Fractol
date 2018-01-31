@@ -67,7 +67,7 @@ clean:
 	@$(RM) $(NORM_LOG)
 	@$(RM) $(OBJS)
 	@$(RM) -r $(NAME).dSYM
-	@make -C libft fclean > /dev/null
+	@make -C libft clean > /dev/null
 	@rmdir $(OBJ_PATH) 2> /dev/null || true
 	@printf "\033[33mRemoved \033[93mobject files!\033[0m\n"
 
