@@ -11,7 +11,10 @@ SRCS_NAMES =	color_point.c		\
 				events.c			\
 				image.c				\
 				interpolate.c		\
+				kargs.c				\
+				krun.c				\
 				main.c				\
+				opencl_utils.c		\
 				palette.c			\
 				palette_maker.c		\
 				palette_parser.c	\
