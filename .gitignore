@@ -1,4 +1,5 @@
 *.o
+*.clbin
 libft.a
 libmlx.a
 fractol

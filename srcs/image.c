@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/28 08:42:15 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/01/31 15:55:39 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 static void			julia_mandelbrot(t_image *img, t_cpx *point, t_color *color,
 		t_palette *pal)
 {
-	double			x;
-	double			y;
+	float			x;
+	float			y;
 	int				i;
-	double			tmp;
+	float			tmp;
 
 	x = .0;
 	y = .0;
@@ -36,7 +36,7 @@ static void			julia_mandelbrot(t_image *img, t_cpx *point, t_color *color,
 	if (i == 1000)
 		*color = set_color(img, 0, 0, 0);
 	else
-		*color = get_gradient(img, pal, (double)i / MAX_ITER);
+		*color = get_gradient(img, pal, (float)i / MAX_ITER);
 }
 
 static void			put_gradient_bar(t_window *win)
@@ -53,7 +53,7 @@ static void			put_gradient_bar(t_window *win)
 		y = win->height - 20;
 		win_pixel_put(win, x, y - 1, black);
 		color = get_gradient(win->img, ((t_fractal *)win->extra)->palette,
-				(double)x / (double)win->width);
+				(float)x / (float)win->width);
 		while (y < win->height)
 		{
 			win_pixel_put(win, x, y, color);
@@ -63,19 +63,19 @@ static void			put_gradient_bar(t_window *win)
 	}
 }
 
-static void			scale_coords(t_cpx *p, t_window *win, double x, double y)
+static void			scale_coords(t_cpx *p, t_window *win, float x, float y)
 {
 	t_fractal		*frac;
-	double			tx;
-	double			ty;
-	double			start_x;
-	double			start_y;
+	float			tx;
+	float			ty;
+	float			start_x;
+	float			start_y;
 
 	frac = win->extra;
 	start_x = frac->x_min * win->ctx->mouse_x;
 	start_y = frac->y_min * win->ctx->mouse_y;
-	tx = x / (double)win->width * (frac->x_max - frac->x_min) + start_x;
-	ty = y / (double)win->height * (frac->y_max - frac->y_min) + start_y;
+	tx = x / (float)win->width * (frac->x_max - frac->x_min) + start_x;
+	ty = y / (float)win->height * (frac->y_max - frac->y_min) + start_y;
 	*p = (t_cpx){.re = (3.5 * tx) / frac->x_max - 2.5, .im = (2 * ty) /
 		frac->y_max - 1};
 }
