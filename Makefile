@@ -29,11 +29,14 @@ CL_SRCS_NAMES =	mandel_julia.cl
 OBJS_NAMES = $(SRCS_NAMES:.c=.o)
 CL_OBJS_NAMES = $(CL_SRCS_NAMES:.cl=.clbin)
 
-INCS_NAMES =	clbin.h		\
-				events.h	\
-				fractol.h	\
-				image.h		\
-				palette.h	\
+INCS_NAMES =	clbin.h				\
+				events.h			\
+				frac_mem.h			\
+				fractol.h			\
+				ft_opencl.h			\
+				ft_opencl_types.h	\
+				image.h				\
+				palette.h			\
 
 SRCS = $(addprefix $(SRC_PATH)/, $(SRCS_NAMES))
 CL_SRCS = $(addprefix $(CL_SRC_PATH)/, $(CL_SRCS_NAMES))
@@ -53,12 +56,16 @@ FRAMEWORKS = -framework OpenCL -framework OpenGL -framework AppKit
 CPPFLAGS = -I$(INC_PATH) -Ilibft/includes -I$(MLX_PATH)
 RM = rm -f
 
+ifeq ($(DEBUG), 1)
+CFLAGS += -D DEBUG=1
+endif
+
 NORM_LOG = norm.log
 NORM_FILES =
 
 all: $(LIBFT) $(MLX) $(NAME)
 
-$(NAME): $(CL_OBJS) $(OBJS) $(INCS)
+$(NAME): $(CL_OBJS) $(OBJS)
 	@tput dl; tput cub 100; printf "\033[90mCreating object files: \033[32mdone!"
 	@printf "\n\033[90mCompiling \033[0m$(NAME)\033[90m: \033[0m"
 	@$(CC) -o $(NAME) $(OBJS) $(CFLAGS) $(LIBS) $(FRAMEWORKS)
@@ -72,13 +79,13 @@ $(MLX):
 	@make -C $(MLX_PATH) &> /dev/null
 	@printf "\033[32mdone!\n\n"
 
-$(CL_OBJ_PATH)/%.clbin: $(CL_SRC_PATH)/%.cl
+$(CL_OBJ_PATH)/%.clbin: $(CL_SRC_PATH)/%.cl $(INCS)
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
 	@mkdir $(CL_OBJ_PATH) 2> /dev/null || true
 	@tput dl; tput cub 100; printf "\033[90mCreating OpenCL binary files: \033[0m$(notdir $@)\n"
-	$(CLC) -cl-std=CL1.2 -emit-llvm -c -arch gpu_64 $< -o $@
+	@$(CLC) -I$(INC_PATH) -cl-std=CL1.2 -emit-llvm -c -arch gpu_64 $< -o $@
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCS)
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
 	@tput dl; tput cub 100; printf "\033[90mCreating object files: \033[0m$(notdir $@)"
 	@-$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
@@ -95,6 +102,7 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
+	@$(RM) $(NAME)_debug
 	@make -C libft fclean &> /dev/null
 	@make -C $(MLX_PATH) clean &> /dev/null
 	@printf "\033[33mRemoved \033[93m$(NAME) executable!\033[0m\n\n"
