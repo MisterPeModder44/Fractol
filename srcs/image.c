@@ -6,13 +6,13 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/31 18:32:06 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/08 15:28:06 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
-#include <stdio.h>
 #include "fractol.h"
+#include "clbin.h"
 
 static void			put_gradient_bar(t_window *win)
 {
@@ -38,7 +38,7 @@ static void			put_gradient_bar(t_window *win)
 	}
 }
 
-static void			scale_coords(t_cpx p, t_window *win, float x, float y)
+static void			scale_coords(t_cpx *p, t_window *win, float x, float y)
 {
 	t_fractal		*frac;
 	float			tx;
@@ -51,29 +51,72 @@ static void			scale_coords(t_cpx p, t_window *win, float x, float y)
 	start_y = frac->y_min * win->ctx->mouse_y;
 	tx = x / (float)win->width * (frac->x_max - frac->x_min) + start_x;
 	ty = y / (float)win->height * (frac->y_max - frac->y_min) + start_y;
-	p[0] = (3.5 * tx) / frac->x_max - 2.5;
-	p[1] = (2 * ty) / frac->y_max - 1;
+	p->re = (3.5 * tx) / frac->x_max - 2.5;
+	p->im = (2 * ty) / frac->y_max - 1;
 }
 
-void				draw_fractal(t_window *win, t_opencl_ctx *ctx)
+static t_cpx		*make_cpx_tab(t_window *win, t_cpx *c, t_bool is_fixed)
 {
+	size_t			size;
+	t_cpx			*tab;
 	t_cpx			point;
 	uint32_t		y;
 	uint32_t		x;
-	//t_color			color;
 
-	y = .0;
+	size = win->height * win->width;
+	if (!(tab = (t_cpx *)malloc(sizeof(t_cpx) * size)))
+		return (NULL);
+	point = c ? *c : (t_cpx) {.re = 0, .im = 0};
+	y = 0;
 	while (y < win->height)
 	{
-		x = .0;
+		x = 0;
 		while (x < win->width)
 		{
-			scale_coords(point, win, x, y);
-			julia_mandelbrot(point, ctx);
-			//win_pixel_put(win, x, y, color);
+			if (!is_fixed)
+				scale_coords(&point, win, x, y);
+			tab[y * win->width + x] = point;
 			++x;
 		}
 		++y;
 	}
+	return (tab);
+}
+
+static void			draw_fractal_pixels(t_window *win, t_clfloat *ret)
+{
+	uint32_t		y;
+	uint32_t		x;
+
+	y = 0;
+	while (y < win->height)
+	{
+		x = 0;
+		while (x < win->width)
+		{
+			win_pixel_put(win, x, y, get_gradient(win->img, win->ctx->palette,
+						ret[x + y * win->width]));
+			++x;
+		}
+		++y;
+	}
+}
+
+void				draw_fractal(t_window *win, t_mlx_context *ctx)
+{
+	t_cpx			*tab;
+	t_jfrac			frac;
+	t_opencl_ctx	*clx;
+	t_clfloat		*ret;
+
+	clx = ctx->cl_ctx;
+	if (!(tab = make_cpx_tab(win, NULL, FALSE)))
+		return ;
+	init_frac_mem(&frac, MANDELBROT, win->width * win->height, 1000);
+	set_frac_mem(ctx->cl_ctx, &frac, tab);
+	if (!(ret = run_kernel(R_KRN(clx, CL_JULIA_ID), R_ARG(clx, CL_JULIA_ID),
+					clx->cmd_queue, win->width * win->height)))
+		return ;
+	draw_fractal_pixels(win, ret);
 	put_gradient_bar(win);
 }

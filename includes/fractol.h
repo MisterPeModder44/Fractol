@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:20:17 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/31 18:15:48 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/08 13:50:40 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "palette.h"
 # include "image.h"
 # include "ft_opencl.h"
+# include "ft_opencl_types.h"
+# include "frac_mem.h"
 
 # define MAX_ITER 200.
 
@@ -51,7 +53,7 @@ typedef struct		s_window
 
 typedef struct		s_fractal
 {
-	void			(*draw)(t_window *);
+	void			(*draw)(t_window *, t_mlx_context *);
 	t_palette		*palette;
 	double			x_min;
 	double			y_min;
@@ -59,15 +61,16 @@ typedef struct		s_fractal
 	double			y_max;
 }					t_fractal;
 
-typedef float		t_cpx[2];
-
 void				init_window(t_mlx_context *ctx);
 
 void				load_opencl(t_opencl_ctx *ctx);
 
-void				draw_fractal(t_window *win, t_opencl_ctx *ctx);
+void				draw_fractal(t_window *win, t_mlx_context *ctx);
 
-void				julia_mandelbrot(t_cpx c, t_opencl_ctx *ctx);
+t_jfrac				*init_frac_mem(t_jfrac *frac, t_fractype type,
+		size_t pixels, t_clint max_iter);
+
+t_bool				set_frac_mem(t_opencl_ctx *ctx, t_jfrac *frac, t_cpx *tab);
 
 void				quit_fractol(t_mlx_context *ctx, const char *reason);
 

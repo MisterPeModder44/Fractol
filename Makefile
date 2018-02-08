@@ -29,14 +29,16 @@ CL_SRCS_NAMES =	mandel_julia.cl
 OBJS_NAMES = $(SRCS_NAMES:.c=.o)
 CL_OBJS_NAMES = $(CL_SRCS_NAMES:.cl=.clbin)
 
-INCS_NAMES =	clbin.h				\
-				events.h			\
-				frac_mem.h			\
-				fractol.h			\
-				ft_opencl.h			\
-				ft_opencl_types.h	\
-				image.h				\
-				palette.h			\
+INCS_NAMES =	clbin.h						\
+				events.h					\
+				frac_mem.h					\
+				fractol.h					\
+				ft_opencl.h					\
+				ft_opencl_types.h			\
+				internal_opencl_types_c.h	\
+				internal_opencl_types_cl.h	\
+				image.h						\
+				palette.h					\
 
 SRCS = $(addprefix $(SRC_PATH)/, $(SRCS_NAMES))
 CL_SRCS = $(addprefix $(CL_SRC_PATH)/, $(CL_SRCS_NAMES))
@@ -51,7 +53,7 @@ LIBS := -lm -L$(MLX_PATH) -lmlx -Llibft -lft
 
 CC = gcc
 CLC = /System/Library/Frameworks/OpenCL.framework/Libraries/openclc
-CFLAGS = -g -Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra -pedantic
 FRAMEWORKS = -framework OpenCL -framework OpenGL -framework AppKit
 CPPFLAGS = -I$(INC_PATH) -Ilibft/includes -I$(MLX_PATH)
 RM = rm -f

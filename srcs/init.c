@@ -6,24 +6,29 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 16:31:16 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/31 18:05:23 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/08 14:33:16 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
+#include <debug.h>
 #include "fractol.h"
 #include "clbin.h"
 #include "events.h"
+#include <libft_base/memory.h>
 
 void			load_opencl(t_opencl_ctx *ctx)
 {
+	size_t		size;
+
+	size = W_PIXELS;
 	init_opencl(ctx, CL_NUM_RUNS);
+	init_kargs(R_ARG(ctx, CL_JULIA_ID), 2, CL_FALSE);
 	load_cl_program(ctx, CL_BIN(CL_JULIA), CL_JULIA_ID);
 	load_kernel(ctx, CL_JULIA, CL_JULIA_ID);
-	init_kargs(R_ARG(ctx, CL_JULIA_ID), 1, CL_FALSE);
-	add_karg(R_ARG(ctx, CL_JULIA_ID),
-			NULL, sizeof(cl_float2) * W_PIXELS, ctx->context);
-	set_ret_karg(R_ARG(ctx, CL_JULIA_ID), sizeof(cl_int) * W_PIXELS,
+	add_karg(R_ARG(ctx, CL_JULIA_ID), sizeof(t_jfrac), ctx->context);
+	add_karg(R_ARG(ctx, CL_JULIA_ID), sizeof(t_cpx) * size, ctx->context);
+	set_ret_karg(R_ARG(ctx, CL_JULIA_ID), sizeof(t_clfloat) * size,
 			ctx->context);
 }
 

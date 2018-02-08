@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clbin.h                                            :+:      :+:    :+:   */
+/*   internal_opencl_types_cl.h                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/31 16:44:31 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 09:59:49 by yguaye           ###   ########.fr       */
+/*   Created: 2018/02/08 14:17:34 by yguaye            #+#    #+#             */
+/*   Updated: 2018/02/08 14:19:57 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLBIN_H
-# define CLBIN_H
+#ifndef INTERNAL_OPENCL_TYPES_CL_H
+# define INTERNAL_OPENCL_TYPES_CL_H
+# ifdef __ROUNDING_MODE__
 
-# define CL_NUM_RUNS 1
+typedef bool			t_clbool;
+typedef char			t_clchar;
+typedef unsigned char	t_cluchar;
+typedef int				t_clint;
+typedef unsigned int	t_cluint;
+typedef long			t_cllong;
+typedef unsigned long	t_clulong;
+typedef float			t_clfloat;
+typedef half			t_clhalf;
 
-# define CL_BIN(NAME) "./bin/cl/"  NAME  ".clbin"
-
-# define CL_JULIA "mandel_julia"
-# define CL_JULIA_ID 0
-
+# endif
 #endif

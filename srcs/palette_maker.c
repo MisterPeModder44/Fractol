@@ -6,13 +6,13 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/20 17:09:08 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 15:04:54 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/08 13:47:58 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <debug.h>
 #include "palette.h"
-#include <stdio.h>
 
 t_bool				val_palette(t_list *colors, uint32_t size, uint32_t mhue)
 {

@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clbin.h                                            :+:      :+:    :+:   */
+/*   ft_opencl_types.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/31 16:44:31 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 09:59:49 by yguaye           ###   ########.fr       */
+/*   Created: 2018/02/05 17:33:24 by yguaye            #+#    #+#             */
+/*   Updated: 2018/02/08 15:36:13 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLBIN_H
-# define CLBIN_H
+#ifndef FT_OPENCL_TYPES_H
+# define FT_OPENCL_TYPES_H
 
-# define CL_NUM_RUNS 1
+# ifdef __ROUNDING_MODE__
+#  define IS_OPENCL 1
+# else
+#  define IS_OPENCL 0
+# endif
 
-# define CL_BIN(NAME) "./bin/cl/"  NAME  ".clbin"
+# if IS_OPENCL == 1
+#  include "internal_opencl_types_cl.h"
+# else
+#  include "internal_opencl_types_c.h"
+# endif
 
-# define CL_JULIA "mandel_julia"
-# define CL_JULIA_ID 0
+typedef struct			s_cpx
+{
+	t_clfloat			re;
+	t_clfloat			im;
+}						t_cpx;
 
 #endif

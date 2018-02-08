@@ -6,14 +6,13 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 14:41:28 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 13:15:23 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/07 15:59:02 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "fractol.h"
 #include "image.h"
-#include <stdio.h>
 
 void				del_palette(t_palette **palette)
 {

@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clbin.h                                            :+:      :+:    :+:   */
+/*   frac_mem.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/31 16:44:31 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 09:59:49 by yguaye           ###   ########.fr       */
+/*   Created: 2018/02/05 17:13:33 by yguaye            #+#    #+#             */
+/*   Updated: 2018/02/06 13:06:22 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLBIN_H
-# define CLBIN_H
+#ifndef FRAC_MEM_H
+# define FRAC_MEM_H
 
-# define CL_NUM_RUNS 1
+# include "ft_opencl_types.h"
 
-# define CL_BIN(NAME) "./bin/cl/"  NAME  ".clbin"
+typedef enum	e_fractype
+{
+	MANDELBROT = 0,
+	JULIA,
+	BURNING_SHIP,
+	INVALID,
+}				t_fractype;
 
-# define CL_JULIA "mandel_julia"
-# define CL_JULIA_ID 0
+typedef struct	s_jfrac
+{
+	t_fractype	type;
+	size_t		size;
+	t_clfloat	max_iter;
+}				t_jfrac;
 
 #endif

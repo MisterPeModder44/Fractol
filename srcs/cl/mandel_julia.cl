@@ -6,25 +6,31 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:05:51 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/31 17:53:59 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/08 11:13:25 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-kernel void			mandel_julia(global float2 *c, global int *i)
+#include "frac_mem.h"
+
+kernel void			mandel_julia(global t_jfrac *data, global t_cpx *tab,
+		global t_clfloat *iter)
 {
 	private size_t	pos;
-	private double	tmp;
-	private float2	point;
+	private float	tmp;
+	private t_cpx	point;
+	private float	i;
 
 	pos = get_global_id(0);
-	i[pos] = 0;
-	point.x = .0;
-	point.y = .0;
-	while (point.x * point.x + point.y * point.y < 4 && i[pos] < 1000)
+	iter[pos] = 0;
+	point.re = .0f;
+	point.im = .0f;
+	i = 0;
+	while (point.re * point.re + point.im * point.im < 4 && i < data->max_iter)
 	{
-		tmp = point.x * point.x - point.y * point.y + c[pos].x;
-		point.y = 2 * point.x * point.y + c[pos].y;
-		point.x = tmp;
-		++i[pos];
+		tmp = point.re * point.re - point.im * point.im + tab[pos].re;
+		point.im = 2 * point.re * point.im + tab[pos].im;
+		point.re = tmp;
+		++i;
 	}
+	iter[pos] = i / data->max_iter;
 }

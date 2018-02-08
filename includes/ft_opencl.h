@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 11:43:28 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/31 17:47:31 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/07 18:18:58 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # endif
 
 # include <libft_base/list.h>
+# include <debug.h>
 
 # define CL_GPU CL_DEVICE_TYPE_GPU
 # define CLC_FLAG "-Werror"
@@ -79,8 +80,7 @@ void					*run_kernel(cl_kernel kernel, t_kargs *args,
 
 void					init_kargs(t_kargs *args, size_t argc, cl_bool reset);
 
-void					add_karg(t_kargs *args, void *arg, size_t size,
-		cl_context ctx);
+void					add_karg(t_kargs *args, size_t size, cl_context ctx);
 
 void					set_ret_karg(t_kargs *args, size_t siz, cl_context ctx);
 

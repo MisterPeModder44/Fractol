@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clbin.h                                            :+:      :+:    :+:   */
+/*   internal_opencl_types_c.h                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/31 16:44:31 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 09:59:49 by yguaye           ###   ########.fr       */
+/*   Created: 2018/02/08 14:17:36 by yguaye            #+#    #+#             */
+/*   Updated: 2018/02/08 14:22:26 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLBIN_H
-# define CLBIN_H
+#ifndef INTERNAL_OPENCL_TYPES_C_H
+# define INTERNAL_OPENCL_TYPES_C_H
 
-# define CL_NUM_RUNS 1
+# ifdef __APPLE__
+#  include <OpenCL/opencl.h>
+# else
+#  include <CL/cl.h>
+# endif
 
-# define CL_BIN(NAME) "./bin/cl/"  NAME  ".clbin"
-
-# define CL_JULIA "mandel_julia"
-# define CL_JULIA_ID 0
+typedef cl_char			t_clchar;
+typedef cl_uchar		t_cluchar;
+typedef cl_int			t_clint;
+typedef cl_uint			t_cluint;
+typedef cl_long			t_cllong;
+typedef cl_ulong		t_clulong;
+typedef cl_float		t_clfloat;
 
 #endif

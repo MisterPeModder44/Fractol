@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 16:24:16 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/31 17:44:52 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/08 15:36:01 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void				shutdown_opencl(t_opencl_ctx *ctx)
 			release(R_PRG(ctx, i), (void (*)(void *))clReleaseProgram);
 			release(R_KRN(ctx, i), (void (*)(void *))clReleaseKernel);
 			del_kargs(R_ARG(ctx, i));
-			free(R_ARG(ctx, i));
+			release(R_ARG(ctx, i), &free);
+			++i;
 		}
+		free(ctx->runs);
 	}
 }
 
@@ -56,7 +58,7 @@ t_bool				init_runnables(t_opencl_ctx *ctx, size_t num)
 	{
 		R_PRG(ctx, i) = NULL;
 		R_KRN(ctx, i) = NULL;
-		if (!(R_ARG(ctx, i) = (t_kargs *)malloc(sizeof(t_kargs))))
+		if (!((R_ARG(ctx, i) = (t_kargs *)malloc(sizeof(t_kargs)))))
 		{
 			while (i > 0)
 			{

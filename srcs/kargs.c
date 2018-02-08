@@ -6,13 +6,12 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 10:02:54 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/31 17:51:06 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/08 13:45:45 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft_base/memory.h>
-#include <stdio.h>
-#include "ft_opencl.h"
+#include "fractol.h"
 
 void					init_kargs(t_kargs *args, size_t argc, cl_bool reset)
 {
@@ -20,49 +19,36 @@ void					init_kargs(t_kargs *args, size_t argc, cl_bool reset)
 
 	if (reset == CL_TRUE)
 		del_kargs(args);
-	args->argc = argc;
-	if (argc == 0 || !(args->argv = (t_karg *)malloc(sizeof(t_karg) * argc)))
-	{
-		args->argv = NULL;
-		return ;
-	}
+	(args)->argc = argc;
+	if (argc == 0 || !((args)->argv = (t_karg *)malloc(sizeof(t_karg) * argc)))
+		quit_fractol(NULL, "fractol: couldn't allocate arguments!");
 	i = 0;
-	while (i < args->argc)
+	while (i < (args)->argc)
 	{
-		args->argv[i].host_mem = NULL;
-		args->argv[i].kern_mem = NULL;
+		(args)->argv[i].host_mem = NULL;
+		(args)->argv[i].kern_mem = NULL;
 		++i;
 	}
-	args->curr = 0;
-	args->ret = NULL;
+	(args)->curr = 0;
+	(args)->ret = NULL;
 }
 
-void					add_karg(t_kargs *args, void *arg, size_t size,
-		cl_context ctx)
+void					add_karg(t_kargs *args, size_t size, cl_context ctx)
 {
 	cl_int				ret;
 	t_karg				a;
 
+	args->argv[args->curr].host_mem = NULL;
 	if (!args->argv)
 		return ;
 	a = args->argv[args->curr];
-	if ((args->argv[args->curr].host_mem = malloc(size)))
+	if ((args->argv[args->curr].kern_mem = clCreateBuffer(ctx, CL_MEM_READ_ONLY,
+					size, NULL, &ret)) && ret == CL_SUCCESS)
 	{
-		if (arg)
-			ft_memmove(args->argv[args->curr].host_mem, arg, size);
-		else
-			ft_bzero(args->argv[args->curr].host_mem, size);
-		if ((args->argv[args->curr].kern_mem = clCreateBuffer(ctx,
-						CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, size,
-						args->argv[args->curr].host_mem, &ret))
-				&& ret == CL_SUCCESS)
-		{
-			args->argv[args->curr].size = size;
-			++args->curr;
-			return ;
-		}
+		args->argv[args->curr].size = size;
+		++args->curr;
+		return ;
 	}
-	args->argv[args->curr].host_mem = NULL;
 	args->argv[args->curr].kern_mem = NULL;
 	del_kargs(args);
 }
@@ -80,14 +66,14 @@ void					set_ret_karg(t_kargs *args, size_t siz, cl_context ctx)
 	{
 		free(args->ret->host_mem);
 		clReleaseMemObject(args->ret->kern_mem);
+		free(args->ret);
 	}
 	else if (!(args->ret = (t_karg *)malloc(sizeof(t_karg))))
 		return ;
 	args->ret->size = 0;
 	args->ret->kern_mem = clCreateBuffer(ctx, CL_MEM_WRITE_ONLY, siz, NULL, &r);
-	if (!(args->ret->host_mem = malloc(siz)) || r != CL_SUCCESS)
+	if (!(args->ret->host_mem = ft_memalloc(siz)) || r != CL_SUCCESS)
 		return ;
-	ft_bzero(args->ret->host_mem, siz);
 	args->ret->size = siz;
 }
 
@@ -102,10 +88,8 @@ void					del_kargs(t_kargs *args)
 		while (i < args->argc)
 		{
 			arg = args->argv[i];
-			if (arg.host_mem)
-				free(arg.host_mem);
-			if (arg.kern_mem)
-				clReleaseMemObject(arg.kern_mem);
+			release(arg.host_mem, &free);
+			release(arg.kern_mem, (void (*)(void *))clReleaseMemObject);
 			++i;
 		}
 		free(args->argv);
@@ -113,9 +97,9 @@ void					del_kargs(t_kargs *args)
 	}
 	if (args->ret)
 	{
-		if (args->ret->host_mem)
-			free(args->ret->host_mem);
-		if (args->ret->kern_mem)
-			clReleaseMemObject(args->ret->kern_mem);
+		release(args->ret->host_mem, &free);
+		release(args->ret->kern_mem, &free);
+		free(args->ret);
+		args->ret = NULL;
 	}
 }
