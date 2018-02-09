@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 10:54:10 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/28 09:31:12 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/09 10:00:54 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,42 @@ static void	zoom(t_mlx_context *ctx, t_bool zoom_in, t_window *win,
 	draw_fwindow(ctx->windows);
 }
 
+int			on_mouse_pressed(int button, int x, int y, t_mlx_context *ctx)
+{
+	t_window	*win;
+	t_fractal	*frac;
+
+	y = 0;
+	x = 0;
+	if (button == SCROLL_UP_KEY || button == SCROLL_DOWN_KEY)
+	{
+		win = (t_window *)ctx->windows->content;
+		frac = win->extra;
+		zoom(ctx, button == SCROLL_UP_KEY, win, frac);
+	}
+	return (0);
+}
+
 int			on_key_released(int key, t_mlx_context *ctx)
 {
 	t_window	*win;
 	t_fractal	*frac;
 
+	win = (t_window *)ctx->windows->content;
+	frac = win->extra;
 	if (key == ESC_KEY)
 		on_close_window(ctx);
 	else if (key == PLUS_KEY || key == MINUS_KEY)
 	{
-		win = (t_window *)ctx->windows->content;
-		frac = win->extra;
-		zoom(ctx, key == PLUS_KEY, win, frac);
+		zoom(ctx, key == PLUS_KEY || key == SCROLL_UP_KEY, win, frac);
+	}
+	else if (key == R_KEY)
+	{
+		frac->x_min = (double)win->pos_x;
+		frac->y_min = (double)win->pos_y;
+		frac->x_max = (double)(win->pos_x + win->width);
+		frac->y_max = (double)(win->pos_y + win->height);
+		draw_fwindow(ctx->windows);
 	}
 	return (0);
 }

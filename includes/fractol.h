@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:20:17 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 13:50:40 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/08 18:19:05 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,7 @@ void				win_pixel_put(t_window *win, int32_t x, int32_t y,
 		t_color col);
 
 t_bool				add_window(t_mlx_context *ctx, t_window *win);
+
+double				clamp(double num, double min, double max);
 
 #endif

@@ -6,7 +6,8 @@ OBJ_PATH := bin
 CL_OBJ_PATH = $(OBJ_PATH)/cl
 INC_PATH := includes
 
-SRCS_NAMES =	color_point.c		\
+SRCS_NAMES =	clamp.c				\
+				color_point.c		\
 				colors.c			\
 				events.c			\
 				image.c				\
@@ -53,7 +54,7 @@ LIBS := -lm -L$(MLX_PATH) -lmlx -Llibft -lft
 
 CC = gcc
 CLC = /System/Library/Frameworks/OpenCL.framework/Libraries/openclc
-CFLAGS = -g -Wall -Werror -Wextra -pedantic
+CFLAGS = -g -Wall -Werror -Wextra
 FRAMEWORKS = -framework OpenCL -framework OpenGL -framework AppKit
 CPPFLAGS = -I$(INC_PATH) -Ilibft/includes -I$(MLX_PATH)
 RM = rm -f

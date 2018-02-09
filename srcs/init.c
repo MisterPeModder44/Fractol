@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 16:31:16 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 14:33:16 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/08 18:09:27 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void			init_window(t_mlx_context *ctx)
 	ctx->win = mlx_new_window(ctx->mlx, ctx->width, ctx->height,
 			"- Fractol -");
 	mlx_key_hook(ctx->win, (int (*)())&on_key_released, ctx);
+	mlx_mouse_hook(ctx->win, (int (*)())&on_mouse_pressed, ctx);
 	mlx_hook(ctx->win, X11_DESTROYNOTIFY, X11_STRUCTURENOTIFYMASK,
 			(int (*)())&on_close_window, ctx);
 	mlx_hook(ctx->win, X11_MOTIONNOTIFY, 0,
