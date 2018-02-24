@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 10:54:10 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/09 10:00:54 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/09 16:04:22 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,10 @@ int			on_mouse_movement(int x, int y, t_mlx_context *ctx)
 
 	w = (double)((t_window *)ctx->windows->content)->width;
 	h = (double)((t_window *)ctx->windows->content)->height;
-	y = y < 0 ? 0 : y;
-	x = x < 0 ? 0 : x;
-	ctx->mouse_x = (x > w ? w : (double)x) / w;
-	ctx->mouse_y = (y > h ? h : (double)y) / h;
+	ctx->mouse_ax = clamp(x, 0, w) / w;
+	ctx->mouse_ay = clamp(y, 0, h) / h;
+	ctx->mouse_px = x;
+	ctx->mouse_py = y;
+	draw_fwindow(ctx->windows);
 	return (0);
 }

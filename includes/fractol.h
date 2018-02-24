@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:20:17 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 18:19:05 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/14 16:54:23 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 # include "palette.h"
 # include "image.h"
 # include "ft_opencl.h"
-# include "ft_opencl_types.h"
 # include "frac_mem.h"
 
-# define MAX_ITER 200.
+# define MAX_ITER 1000.
 
 # define W_WIDTH 1600
 # define W_HEIGHT 900
@@ -35,8 +34,10 @@ typedef struct		s_mlx_context
 	uint32_t		height;
 	t_list			*windows;
 	t_palette		*palette;
-	double			mouse_x;
-	double			mouse_y;
+	double			mouse_ax;
+	double			mouse_ay;
+	double			mouse_px;
+	double			mouse_py;
 }					t_mlx_context;
 
 typedef struct		s_window
@@ -59,6 +60,7 @@ typedef struct		s_fractal
 	double			y_min;
 	double			x_max;
 	double			y_max;
+	t_fractype		type;
 }					t_fractal;
 
 void				init_window(t_mlx_context *ctx);
@@ -70,7 +72,8 @@ void				draw_fractal(t_window *win, t_mlx_context *ctx);
 t_jfrac				*init_frac_mem(t_jfrac *frac, t_fractype type,
 		size_t pixels, t_clint max_iter);
 
-t_bool				set_frac_mem(t_opencl_ctx *ctx, t_jfrac *frac, t_cpx *tab);
+t_bool				set_frac_mem(t_opencl_ctx *ctx, t_jfrac *frac, t_cpx *tab,
+		t_cpx c);
 
 void				quit_fractol(t_mlx_context *ctx, const char *reason);
 

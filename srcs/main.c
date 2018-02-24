@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:32:01 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 13:45:53 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/10 13:59:25 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int				main(int ac, char **av)
 	mandelbrot.y_max = ctx.height;
 	mandelbrot.x_min = 0;
 	mandelbrot.y_min = 0;
+	mandelbrot.type = JULIA;
 	win_add_extra_data(ctx.windows->content, &mandelbrot, NULL);
 	draw_window(ctx.windows->content, &ctx,
 			(void (*)(t_window *, void *))mandelbrot.draw);

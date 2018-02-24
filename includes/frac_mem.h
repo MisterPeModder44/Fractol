@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:13:33 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/06 13:06:22 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/09 12:52:44 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct	s_jfrac
 	t_fractype	type;
 	size_t		size;
 	t_clfloat	max_iter;
+	t_cpx		c;
 }				t_jfrac;
 
 #endif

@@ -16,7 +16,7 @@ SRCS_NAMES =	clamp.c				\
 				kargs.c				\
 				krun.c				\
 				main.c				\
-				mandel_julia.c		\
+				mandelbrot.c		\
 				opencl_utils.c		\
 				palette.c			\
 				palette_maker.c		\
@@ -25,7 +25,7 @@ SRCS_NAMES =	clamp.c				\
 				window.c			\
 				window2.c			\
 
-CL_SRCS_NAMES =	mandel_julia.cl
+CL_SRCS_NAMES =	mandelbrot.cl
 
 OBJS_NAMES = $(SRCS_NAMES:.c=.o)
 CL_OBJS_NAMES = $(CL_SRCS_NAMES:.cl=.clbin)
@@ -52,12 +52,12 @@ MLX_PATH := minilibx_macos
 MLX = $(MLX_PATH)/libmlx.a
 LIBS := -lm -L$(MLX_PATH) -lmlx -Llibft -lft
 
-CC = gcc
+CC = /usr/bin/gcc
 CLC = /System/Library/Frameworks/OpenCL.framework/Libraries/openclc
-CFLAGS = -g -Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra -O3
 FRAMEWORKS = -framework OpenCL -framework OpenGL -framework AppKit
 CPPFLAGS = -I$(INC_PATH) -Ilibft/includes -I$(MLX_PATH)
-RM = rm -f
+RM = /bin/rm -f
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -D DEBUG=1

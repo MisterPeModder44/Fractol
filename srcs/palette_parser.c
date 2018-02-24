@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 12:00:48 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/20 19:00:56 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/24 15:47:05 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static t_list		*get_palette_colors(const char *format, uint32_t *dim)
 	if (!format)
 		return (NULL);
 	tab = ft_strsplit(format, ';');
-	if (!(len = ft_strtablen(tab)))
+	if (!(len = ft_strtablen((const char **)tab)))
 		return (NULL);
 	if (!get_size(tab, len, dim))
 	{

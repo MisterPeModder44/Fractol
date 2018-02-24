@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandel_julia.c                                     :+:      :+:    :+:   */
+/*   mandelbrot.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 18:08:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 14:33:50 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/09 17:08:13 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,18 @@ t_jfrac				*init_frac_mem(t_jfrac *frac, t_fractype type,
 	return (frac);
 }
 
-t_bool				set_frac_mem(t_opencl_ctx *ctx, t_jfrac *frac, t_cpx *tab)
+t_bool				set_frac_mem(t_opencl_ctx *ctx, t_jfrac *frac, t_cpx *tab,
+		t_cpx c)
 {
 	t_kargs			*args;
 	t_karg			*ret;
 	size_t			s;
 
-	args = R_ARG(ctx, CL_JULIA_ID);
+	args = R_ARG(ctx, CL_MANDEL_ID);
 	ret = args->ret;
 	s = frac->size;
 	ft_bzero(ret->host_mem, ret->size);
+	frac->c = c;
 	if ((
 				clEnqueueWriteBuffer(ctx->cmd_queue, args->argv[0].kern_mem,
 					CL_TRUE, 0, sizeof(t_jfrac), frac, 0, NULL, NULL)
