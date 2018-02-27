@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/10 14:00:18 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/27 14:54:37 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,5 @@ void				draw_fractal(t_window *win, t_mlx_context *ctx)
 					clx->cmd_queue, win->width * win->height)))
 		return ;
 	draw_fractal_pixels(win, ret);
-	printf("c = %.0f + i%.0f\n", frac.c.re, frac.c.im);
 	put_gradient_bar(win);
 }

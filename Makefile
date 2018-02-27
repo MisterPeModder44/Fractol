@@ -22,6 +22,7 @@ SRCS_NAMES =	clamp.c				\
 				palette_maker.c		\
 				palette_parser.c	\
 				palette_size.c		\
+				quit.c				\
 				window.c			\
 				window2.c			\
 

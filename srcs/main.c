@@ -6,78 +6,74 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:32:01 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/10 13:59:25 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/27 15:05:28 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
 #include <stdlib.h>
 #include <libft_base/io.h>
+#include <libft_base/stringft.h>
 #include "fractol.h"
 
-static void		del_window_lst(t_mlx_context *ctx)
+static void		read_args(t_args **args, t_mlx_context *ctx, t_fractal *frac)
 {
-	t_list		*curr;
-	t_list		*tmp;
-	t_window	*win;
+	t_argv_plst	*tmp;
+	char		*str;
 
-	curr = ctx->windows;
-	while (curr)
+	if ((tmp = get_pargv(*args, "palette")))
+		str = *tmp->values;
+	else
+		str = "#000000;#FFFFFF@1;[1,1000]";
+	if (!(ctx->palette = parse_palette(str)))
+		quit_arg_reason(args, ctx, ERRSTR "couldn't create palette.");
+	tmp = NULL;
+	if ((tmp = get_pargv(*args, "fractal")))
 	{
-		win = curr->content;
-		if (win->img && win->img->img_ptr)
-			mlx_destroy_image(ctx->mlx, win->img->img_ptr);
-		free(win->img);
-		if (win->extra && win->del_extra)
-			(*win->del_extra)(win->extra);
-		free(win);
-		tmp = curr->next;
-		free(curr);
-		curr = tmp;
+		str = *tmp->values;
+		if (ft_strequ(str, "mandelbrot"))
+			frac->type = MANDELBROT;
+		else if (ft_strequ(str, "julia"))
+			frac->type = JULIA;
+		else
+			quit_arg_reason(args, ctx, ERRSTR "invalid fractal.");
 	}
-	ctx->windows = NULL;
+	else
+		frac->type = JULIA;
 }
 
-void			quit_fractol(t_mlx_context *ctx, const char *reason)
+static void		init_frac_struct(t_mlx_context *ctx, t_fractal *frac)
 {
-	if (ctx)
-	{
-		if (ctx->windows)
-			del_window_lst(ctx);
-		if (ctx->palette)
-			del_palette(&ctx->palette);
-		if (ctx->cl_ctx)
-			shutdown_opencl(ctx->cl_ctx);
-		mlx_destroy_window(ctx->mlx, ctx->win);
-	}
-	if (reason)
-		ft_putendl_fd(reason, 2);
-	exit(reason != NULL);
+	frac->draw = &draw_fractal;
+	frac->palette = ctx->palette;
+	frac->x_max = ctx->width;
+	frac->y_max = ctx->height;
+	frac->x_min = 0;
+	frac->y_min = 0;
 }
 
 int				main(int ac, char **av)
 {
 	t_mlx_context	ctx;
 	t_opencl_ctx	cl_ctx;
-	t_fractal		mandelbrot;
+	t_fractal		frac;
+	t_args			*args;
 
-	ctx.cl_ctx = &cl_ctx;
-	load_opencl(&cl_ctx);
-	if (ac != 2)
-		quit_fractol(NULL, "fractol: wrong number of arguments!");
-	if (!(ctx.palette = parse_palette(av[1])))
-		quit_fractol(NULL, "fractol: couldn't create palette");
+	init_mlx_context(&ctx, &cl_ctx);
+	args = init_args(ARG_MSIMPLE, NULL, "usage: fractol "
+			"[-palette \"my palette\"] [-fractal <mandelbrot|julia|burning>]");
+	if (!args || add_arg_param(args, "palette", 1, SIZEP_FORCE) ||
+			add_arg_param(args, "fractal", 1, SIZEP_FORCE))
+		quit_arg_error(args ? &args : NULL, &ctx);
+	if (parse_args(args, ac, av) && has_arg_errors(args, ARG_EMPTY))
+		quit_arg_error(&args, &ctx);
+	read_args(&args, &ctx, &frac);
 	init_window(&ctx);
-	mandelbrot.draw = &draw_fractal;
-	mandelbrot.palette = ctx.palette;
-	mandelbrot.x_max = ctx.width;
-	mandelbrot.y_max = ctx.height;
-	mandelbrot.x_min = 0;
-	mandelbrot.y_min = 0;
-	mandelbrot.type = JULIA;
-	win_add_extra_data(ctx.windows->content, &mandelbrot, NULL);
+	free_args(&args);
+	init_frac_struct(&ctx, &frac);
+	win_add_extra_data(ctx.windows->content, &frac, NULL);
 	draw_window(ctx.windows->content, &ctx,
-			(void (*)(t_window *, void *))mandelbrot.draw);
+			(void (*)(t_window *, void *))frac.draw);
 	mlx_loop(ctx.mlx);
 	return (0);
 }

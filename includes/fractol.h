@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:20:17 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/14 16:54:23 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/27 14:53:53 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FRACTOL_H
 
 # include <libft_base/list.h>
+# include <libft_args/args.h>
 # include "palette.h"
 # include "image.h"
 # include "ft_opencl.h"
@@ -24,6 +25,7 @@
 # define W_WIDTH 1600
 # define W_HEIGHT 900
 # define W_PIXELS W_WIDTH * W_HEIGHT
+# define ERRSTR "fractol: \033[1;31merror: \033[0m"
 
 typedef struct		s_mlx_context
 {
@@ -63,6 +65,8 @@ typedef struct		s_fractal
 	t_fractype		type;
 }					t_fractal;
 
+void				init_mlx_context(t_mlx_context *ctx, t_opencl_ctx *ocl);
+
 void				init_window(t_mlx_context *ctx);
 
 void				load_opencl(t_opencl_ctx *ctx);
@@ -76,6 +80,11 @@ t_bool				set_frac_mem(t_opencl_ctx *ctx, t_jfrac *frac, t_cpx *tab,
 		t_cpx c);
 
 void				quit_fractol(t_mlx_context *ctx, const char *reason);
+
+void				quit_arg_error(t_args **args, t_mlx_context *ctx);
+
+void				quit_arg_reason(t_args **args, t_mlx_context *ctx,
+		const char *reason);
 
 t_window			*new_window(int32_t x, int32_t y, uint32_t w, uint32_t h);
 

@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 16:31:16 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/10 13:48:07 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/27 13:26:46 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "fractol.h"
 #include "clbin.h"
 #include "events.h"
+#include <libft_base/io.h>
+#include <libft_base/memory.h>
 
 void			load_opencl(t_opencl_ctx *ctx)
 {
@@ -30,16 +32,22 @@ void			load_opencl(t_opencl_ctx *ctx)
 			ctx->context);
 }
 
-void			init_window(t_mlx_context *ctx)
+void			init_mlx_context(t_mlx_context *ctx, t_opencl_ctx *ocl)
 {
-	ctx->mlx = mlx_init();
+	ft_bzero(ctx, sizeof(t_mlx_context));
+	load_opencl(ocl);
+	ctx->cl_ctx = ocl;
 	ctx->width = W_WIDTH;
 	ctx->height = W_HEIGHT;
 	ctx->mouse_ax = .5;
 	ctx->mouse_ay = .5;
 	ctx->mouse_px = ctx->width / 2;
 	ctx->mouse_py = ctx->height / 2;
-	ctx->windows = NULL;
+}
+
+void			init_window(t_mlx_context *ctx)
+{
+	ctx->mlx = mlx_init();
 	add_window(ctx, init_w(ctx, new_window(0, 0, ctx->width, ctx->height)));
 	ctx->win = mlx_new_window(ctx->mlx, ctx->width, ctx->height,
 			"- Fractol -");
