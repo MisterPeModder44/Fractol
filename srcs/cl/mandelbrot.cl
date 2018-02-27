@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:05:51 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/16 07:52:35 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/27 15:25:59 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #define ABS(x) (x < 0 ? -x : x)
 
-static void			frac_mandel(global t_jfrac *data, global t_cpx *tab,
+static void			frac_burning(global t_jfrac *data, global t_cpx *tab,
 		global t_clfloat *iter)
 {
 	private size_t	pos;
@@ -32,6 +32,30 @@ static void			frac_mandel(global t_jfrac *data, global t_cpx *tab,
 		tmp = point.re * point.re - point.im * point.im + tab[pos].re;
 		point.im = ABS(2 * point.re * point.im + tab[pos].im);
 		point.re = ABS(tmp);
+		++i;
+	}
+	iter[pos] = i / data->max_iter;
+}
+
+
+static void			frac_mandel(global t_jfrac *data, global t_cpx *tab,
+		global t_clfloat *iter)
+{
+	private size_t	pos;
+	private float	tmp;
+	private t_cpx	point;
+	private float	i;
+
+	pos = get_global_id(0);
+	iter[pos] = 0;
+	point.re = .0f;
+	point.im = .0f;
+	i = 0;
+	while (point.re * point.re + point.im * point.im < 4 && i < data->max_iter)
+	{
+		tmp = point.re * point.re - point.im * point.im + tab[pos].re;
+		point.im = 2 * point.re * point.im + tab[pos].im;
+		point.re = tmp;
 		++i;
 	}
 	iter[pos] = i / data->max_iter;
@@ -94,6 +118,8 @@ kernel void			mandelbrot(global t_jfrac *data, global t_cpx *tab,
 		frac_mandel(data, tab, iter);
 	else if (data->type == JULIA)
 		frac_mandel(data, tab, iter);
+	else if (data->type == BURNING_SHIP)
+		frac_burning(data, tab, iter);
 	/*else
 	  iter[get_global_id(0)] = .0;*/
 }
