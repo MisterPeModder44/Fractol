@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:20:17 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/27 14:53:53 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/27 16:16:20 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,11 @@ void				init_mlx_context(t_mlx_context *ctx, t_opencl_ctx *ocl);
 
 void				init_window(t_mlx_context *ctx);
 
-void				load_opencl(t_opencl_ctx *ctx);
+t_args				*add_fractol_args(t_mlx_context *ctx);
+
+void				init_frac_struct(t_mlx_context *ctx, t_fractal *frac);
+
+void				load_opencl(t_opencl_ctx *ctx);;
 
 void				draw_fractal(t_window *win, t_mlx_context *ctx);
 
@@ -104,5 +108,8 @@ void				win_pixel_put(t_window *win, int32_t x, int32_t y,
 t_bool				add_window(t_mlx_context *ctx, t_window *win);
 
 double				clamp(double num, double min, double max);
+
+void				read_args(t_args **args, t_mlx_context *ctx,
+		t_fractal *frac);
 
 #endif
