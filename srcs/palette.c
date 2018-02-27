@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 14:41:28 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/07 15:59:02 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/27 17:04:47 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ t_color				get_gradient(t_image *img, t_palette *p,
 {
 	uint32_t		pos;
 
+	if (amount == 1)
+		return (set_color(img, 0, 0, 0));
 	pos = (uint32_t)(amount * p->size);
 	return (set_color(img, p->reds[pos], p->greens[pos], p->blues[pos]));
 }
