@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 16:31:16 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/27 16:12:19 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/02/28 15:41:09 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_args			*add_fractol_args(t_mlx_context *ctx)
 {
 	t_args		*args;
 
-	args = init_args(ARG_MSIMPLE, NULL, "usage: fractol "
+	args = init_args(ARG_MSIMPLE | ARG_MSINGLE_PARAMS, NULL, "usage: fractol "
 			"[<-palette \"my palette\"> | <-preset ...>] [-fractal ...]\n"
 			"valid presets: gold, spectre, blackAndWhite\n"
 			"valid fractals: mandelbrot, julia, burning");
