@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 10:02:54 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 13:45:45 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/03/01 16:59:09 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void					del_kargs(t_kargs *args)
 		{
 			arg = args->argv[i];
 			release(arg.host_mem, &free);
-			release(arg.kern_mem, (void (*)(void *))clReleaseMemObject);
+			release(arg.kern_mem, (void (*)(void *))&clReleaseMemObject);
 			++i;
 		}
 		free(args->argv);
@@ -98,7 +98,7 @@ void					del_kargs(t_kargs *args)
 	if (args->ret)
 	{
 		release(args->ret->host_mem, &free);
-		release(args->ret->kern_mem, &free);
+		release(args->ret->kern_mem, (void (*)(void *))&clReleaseMemObject);
 		free(args->ret);
 		args->ret = NULL;
 	}
