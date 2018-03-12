@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:13:33 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/27 15:26:20 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/03/02 09:05:16 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define FRAC_MEM_H
 
 # include "ft_opencl_types.h"
+
+# define FT_ABS(x) (x < 0 ? -x : x)
 
 typedef enum	e_fractype
 {
