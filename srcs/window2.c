@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 08:30:55 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 17:58:57 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 18:19:05 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,8 @@ void				put_infos(t_mlx_context *ctx, t_window *win)
 	mlx_string_put(ctx->mlx, ctx->win, 0, 36, 0x00FFFFFF, "Press ");
 	mlx_string_put(ctx->mlx, ctx->win, 60, 36, 0x00CC9900, "ESC");
 	mlx_string_put(ctx->mlx, ctx->win, 90, 36, 0x00FFFFFF, " to quit");
+	mlx_string_put(ctx->mlx, ctx->win, 0, 54, 0x00FFFFFF, "Press ");
+	mlx_string_put(ctx->mlx, ctx->win, 60, 54, 0x00CC9900, "[ or ]");
+	mlx_string_put(ctx->mlx, ctx->win, 120, 54, 0x00FFFFFF, " to change "
+			"iteration level");
 }

@@ -14,6 +14,7 @@ SRCS_NAMES =	clamp.c				\
 				init.c				\
 				interpolate.c		\
 				kargs.c				\
+				keys.c				\
 				krun.c				\
 				main.c				\
 				mandelbrot.c		\

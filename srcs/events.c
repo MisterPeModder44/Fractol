@@ -6,12 +6,11 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 10:54:10 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 16:02:43 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 18:12:23 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "events.h"
-#include <stdio.h>
 
 int			on_close_window(t_mlx_context *ctx)
 {
@@ -74,17 +73,11 @@ int			on_key_released(int key, t_mlx_context *ctx)
 	if (key == ESC_KEY)
 		on_close_window(ctx);
 	else if (key == PLUS_KEY || key == MINUS_KEY)
-	{
 		zoom(ctx, key == PLUS_KEY || key == SCROLL_UP_KEY, win, frac);
-	}
 	else if (key == R_KEY)
-	{
-		frac->x_min = (double)win->pos_x;
-		frac->y_min = (double)win->pos_y;
-		frac->x_max = (double)(win->pos_x + win->width);
-		frac->y_max = (double)(win->pos_y + win->height);
-		draw_fwindow(ctx->windows);
-	}
+		reset_zoom(ctx, win, frac);
+	else if (key == LBRACKET_KEY || key == RBRACKET_KEY)
+		change_iter_level(ctx, key == RBRACKET_KEY, frac);
 	return (0);
 }
 

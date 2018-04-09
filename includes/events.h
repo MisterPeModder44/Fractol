@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 10:51:31 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 18:08:03 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 18:12:08 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # define ESC_KEY 53
 # define PLUS_KEY 69
 # define MINUS_KEY 78
+# define RBRACKET_KEY 30
+# define LBRACKET_KEY 33
 
 # define SCROLL_UP_KEY 4
 # define SCROLL_DOWN_KEY 5
@@ -32,5 +34,7 @@ int			on_key_released(int key, t_mlx_context *ctx);
 int			on_close_window(t_mlx_context *ctx);
 int			on_mouse_movement(int x, int y, t_mlx_context *ctx);
 int			on_mouse_pressed(int button, int x, int y, t_mlx_context *ctx);
+void		reset_zoom(t_mlx_context *ctx, t_window *win, t_fractal *frac);
+void		change_iter_level(t_mlx_context *ctx, t_bool what, t_fractal *frac);
 
 #endif
