@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 16:14:58 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 16:52:37 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 18:52:18 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,30 @@ static void		get_palette(t_args **args, t_mlx_context *ctx)
 		str = "#000000; #FFFFFF@1; [1,1000]";
 	if (!(ctx->palette = parse_palette(str)))
 		quit_arg_reason(args, ctx, ERRSTR "couldn't create palette.");
+}
+
+static int		is_integral(char *str)
+{
+	while (*str)
+	{
+		if (*str < '0' || *str > '9')
+			return (0);
+		++str;
+	}
+	return (1);
+}
+
+static void		get_iter_arg(t_args **args, t_mlx_context *ctx,
+		t_fractal *frac)
+{
+	t_argv_plst	*tmp;
+
+	if ((tmp = get_pargv(*args, "iter")))
+	{
+		if (!is_integral(*tmp->values))
+			quit_arg_reason(args, ctx, ERRSTR "invalid iteration number");
+		frac->iter = ft_atoi(*tmp->values);
+	}
 }
 
 static void		get_fractal_arg(t_args **args, t_mlx_context *ctx,
@@ -73,6 +97,10 @@ void			read_args(t_args **args, t_mlx_context *ctx, t_fractal *frac)
 		show_usage(*args);
 		quit_arg_reason(args, ctx, NULL);
 	}
+	if (has_arg(*args, "iter", PARAMETER))
+		get_iter_arg(args, ctx, frac);
+	else
+		frac->iter = DEFAULT_ITER;
 	if (has_arg(*args, "palette", PARAMETER)
 			&& has_arg(*args, "preset", PARAMETER))
 		quit_arg_reason(args, ctx, ERRSTR "palette and preset parameters "

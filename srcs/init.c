@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 16:31:16 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 17:30:57 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 18:48:40 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,14 @@ t_args			*add_fractol_args(t_mlx_context *ctx)
 	t_args		*args;
 
 	args = init_args(ARG_MSIMPLE | ARG_MSINGLE_PARAMS, NULL, "usage: fractol "
-			"[<-palette \"my palette\"> | <-preset ...>] [-fractal ...]\n"
+			"<-fractal ...> [<-palette \"my palette\"> | <-preset ...>] "
+			"[-iter <number>]\n"
 			"valid presets: gold, spectre, blackAndWhite\n"
 			"valid fractals: mandelbrot, julia, burning");
 	if (!args || add_arg_param(args, "palette", 1, SIZEP_FORCE) ||
 			add_arg_param(args, "preset", 1, SIZEP_FORCE) ||
 			add_arg_param(args, "help", 0, SIZEP_FORCE) ||
+			add_arg_param(args, "iter", 1, SIZEP_FORCE) ||
 			add_arg_param(args, "fractal", 1, SIZEP_FORCE))
 		quit_arg_error(args ? &args : NULL, ctx);
 	return (args);
@@ -83,5 +85,4 @@ void			init_frac_struct(t_mlx_context *ctx, t_fractal *frac)
 	frac->y_max = ctx->height;
 	frac->x_min = 0;
 	frac->y_min = 0;
-	frac->iter = DEFAULT_ITER;
 }

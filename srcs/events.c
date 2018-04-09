@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 10:54:10 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 18:12:23 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 18:25:07 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			on_close_window(t_mlx_context *ctx)
 	return (0);
 }
 
-static void	zoom(t_mlx_context *ctx, t_bool zoom_in, t_window *win,
+static void	zoom(t_mlx_context *ctx, t_bool zoom_in,
 		t_fractal *frac)
 {
 	double		distx;
@@ -35,14 +35,10 @@ static void	zoom(t_mlx_context *ctx, t_bool zoom_in, t_window *win,
 	}
 	else
 	{
-		if ((frac->x_min -= distx) < .0)
-			frac->x_min = .0;
-		if ((frac->y_min -= disty) < .0)
-			frac->y_min = .0;
-		if ((frac->x_max += distx) > (double)win->width)
-			frac->x_max = win->width;
-		if ((frac->y_max += disty) > (double)win->height)
-			frac->y_max = win->height;
+		frac->x_min -= distx;
+		frac->y_min -= disty;
+		frac->x_max += distx;
+		frac->y_max += disty;
 	}
 	draw_fwindow(ctx->windows);
 }
@@ -58,7 +54,7 @@ int			on_mouse_pressed(int button, int x, int y, t_mlx_context *ctx)
 	{
 		win = (t_window *)ctx->windows->content;
 		frac = win->extra;
-		zoom(ctx, button == SCROLL_UP_KEY, win, frac);
+		zoom(ctx, button == SCROLL_UP_KEY, frac);
 	}
 	return (0);
 }
@@ -73,7 +69,7 @@ int			on_key_released(int key, t_mlx_context *ctx)
 	if (key == ESC_KEY)
 		on_close_window(ctx);
 	else if (key == PLUS_KEY || key == MINUS_KEY)
-		zoom(ctx, key == PLUS_KEY || key == SCROLL_UP_KEY, win, frac);
+		zoom(ctx, key == PLUS_KEY || key == SCROLL_UP_KEY, frac);
 	else if (key == R_KEY)
 		reset_zoom(ctx, win, frac);
 	else if (key == LBRACKET_KEY || key == RBRACKET_KEY)
