@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 16:14:58 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/28 15:21:02 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 16:52:37 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void			read_args(t_args **args, t_mlx_context *ctx, t_fractal *frac)
 	if (has_arg(*args, NULL, DEFAULT))
 		quit_arg_reason(args, ctx, ERRSTR "non-parameter arguments are not "
 				"valid!");
+	if (!has_arg(*args, "fractal", PARAMETER))
+		quit_arg_reason(args, ctx, ERRSTR "missing fractal parameter!");
 	if (has_arg(*args, "help", PARAMETER))
 	{
 		show_usage(*args);

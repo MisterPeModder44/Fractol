@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:32:01 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/28 10:44:50 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 16:46:27 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int				main(int ac, char **av)
 				"interuption signal!", 2);
 	init_mlx_context(&ctx, &cl_ctx);
 	args = add_fractol_args(&ctx);
-	if (parse_args(args, ac, av) && has_arg_errors(args, ARG_EMPTY))
+	if (parse_args(args, ac, av))
 		quit_arg_error(&args, &ctx);
 	read_args(&args, &ctx, &frac);
 	init_window(&ctx);
