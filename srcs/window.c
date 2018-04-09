@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 13:42:48 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 17:22:10 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 17:24:59 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void			draw_window(t_window *win, void *extra,
 	draw(win, extra);
 	mlx_put_image_to_window(win->ctx->mlx, win->ctx->win, img->img_ptr,
 			win->pos_x, win->pos_y);
+	put_infos(win->ctx, win);
 }
 
 void			win_pixel_put(t_window *win, int32_t x, int32_t y, t_color col)

@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:20:17 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/27 16:16:20 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 17:37:42 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "ft_opencl.h"
 # include "frac_mem.h"
 
-# define MAX_ITER 1000.
+# define DEFAULT_ITER 250
 
 # define W_WIDTH 1600
 # define W_HEIGHT 900
@@ -63,6 +63,7 @@ typedef struct		s_fractal
 	double			x_max;
 	double			y_max;
 	t_fractype		type;
+	int				iter;
 }					t_fractal;
 
 void				init_mlx_context(t_mlx_context *ctx, t_opencl_ctx *ocl);
@@ -111,5 +112,7 @@ double				clamp(double num, double min, double max);
 
 void				read_args(t_args **args, t_mlx_context *ctx,
 		t_fractal *frac);
+
+void				put_infos(t_mlx_context *ctx, t_window *win);
 
 #endif

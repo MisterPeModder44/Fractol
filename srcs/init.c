@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 16:31:16 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/28 15:41:09 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 17:30:57 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,5 @@ void			init_frac_struct(t_mlx_context *ctx, t_fractal *frac)
 	frac->y_max = ctx->height;
 	frac->x_min = 0;
 	frac->y_min = 0;
+	frac->iter = DEFAULT_ITER;
 }
