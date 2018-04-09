@@ -6,13 +6,13 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:24 by yguaye            #+#    #+#             */
-/*   Updated: 2018/01/27 15:29:26 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 16:25:17 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "image.h"
 
-t_color				set_color(t_image *img, int8_t r, int8_t g, int8_t b)
+t_color				set_color(t_image *img, uint8_t r, uint8_t g, uint8_t b)
 {
 	t_color			c;
 

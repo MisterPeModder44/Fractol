@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/03/12 13:44:34 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/09 16:39:10 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void				draw_fractal(t_window *win, t_mlx_context *ctx)
 	init_frac_mem(&frac, ((t_fractal *)win->extra)->type,
 			win->width * win->height, 1000);
 	set_frac_mem(ctx->cl_ctx, &frac, tab,
-			(t_cpx){.re = ctx->mouse_px, .im = ctx->mouse_py});
+			(t_cpx){.re = ctx->mouse_ax, .im = ctx->mouse_ay});
 	if (!(ret = run_kernel(R_KRN(clx, CL_MANDEL_ID), R_ARG(clx, CL_MANDEL_ID),
 					clx->cmd_queue, win->width * win->height)))
 		return ;
