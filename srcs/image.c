@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:22:05 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 17:31:19 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/10 12:52:49 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void			scale_coords(t_cpx *p, t_window *win, float x, float y)
 	p->im = (2 * ty) / frac->y_max - 1;
 }
 
-static t_cpx		*make_cpx_tab(t_window *win, t_cpx *c, t_bool is_fixed)
+static t_cpx		*make_cpx_tab(t_window *win, t_cpx *c)
 {
 	size_t			size;
 	t_cpx			*tab;
@@ -73,8 +73,7 @@ static t_cpx		*make_cpx_tab(t_window *win, t_cpx *c, t_bool is_fixed)
 		x = 0;
 		while (x < win->width)
 		{
-			if (!is_fixed)
-				scale_coords(&point, win, x, y);
+			scale_coords(&point, win, x, y);
 			tab[y * win->width + x] = point;
 			++x;
 		}
@@ -110,12 +109,12 @@ void				draw_fractal(t_window *win, t_mlx_context *ctx)
 	t_clfloat		*ret;
 
 	clx = ctx->cl_ctx;
-	if (!(tab = make_cpx_tab(win, NULL, FALSE)))
+	if (!(tab = make_cpx_tab(win, NULL)))
 		return ;
 	init_frac_mem(&frac, ((t_fractal *)win->extra)->type,
 			win->width * win->height, ((t_fractal *)win->extra)->iter);
 	set_frac_mem(ctx->cl_ctx, &frac, tab,
-			(t_cpx){.re = ctx->mouse_ax, .im = ctx->mouse_ay});
+			(t_cpx){.re = ctx->mouse_lx, .im = ctx->mouse_ly});
 	if (!(ret = run_kernel(R_KRN(clx, CL_MANDEL_ID), R_ARG(clx, CL_MANDEL_ID),
 					clx->cmd_queue, win->width * win->height)))
 		return ;

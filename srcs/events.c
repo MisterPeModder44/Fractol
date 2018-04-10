@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 10:54:10 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 18:25:07 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/10 12:56:28 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,16 @@ int			on_key_released(int key, t_mlx_context *ctx)
 		reset_zoom(ctx, win, frac);
 	else if (key == LBRACKET_KEY || key == RBRACKET_KEY)
 		change_iter_level(ctx, key == RBRACKET_KEY, frac);
+	else if (key == L_KEY)
+	{
+		ctx->locked = !ctx->locked;
+		if (!ctx->locked)
+		{
+			ctx->mouse_lx = ctx->mouse_ax;
+			ctx->mouse_ly = ctx->mouse_ay;
+			draw_fwindow(ctx->windows);
+		}
+	}
 	return (0);
 }
 
@@ -86,6 +96,11 @@ int			on_mouse_movement(int x, int y, t_mlx_context *ctx)
 	h = (double)((t_window *)ctx->windows->content)->height;
 	ctx->mouse_ax = clamp(x, 0, w) / w;
 	ctx->mouse_ay = clamp(y, 0, h) / h;
+	if (!ctx->locked)
+	{
+		ctx->mouse_lx = ctx->mouse_ax;
+		ctx->mouse_ly = ctx->mouse_ay;
+	}
 	ctx->mouse_px = x;
 	ctx->mouse_py = y;
 	draw_fwindow(ctx->windows);

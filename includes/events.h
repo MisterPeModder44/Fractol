@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 10:51:31 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 18:12:08 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/10 12:53:14 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define MINUS_KEY 78
 # define RBRACKET_KEY 30
 # define LBRACKET_KEY 33
+# define L_KEY 37
 
 # define SCROLL_UP_KEY 4
 # define SCROLL_DOWN_KEY 5

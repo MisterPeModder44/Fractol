@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 16:31:16 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 18:48:40 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/10 12:46:21 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void			init_mlx_context(t_mlx_context *ctx, t_opencl_ctx *ocl)
 	ctx->mouse_ay = .5;
 	ctx->mouse_px = ctx->width / 2;
 	ctx->mouse_py = ctx->height / 2;
+	ctx->mouse_lx = .5;
+	ctx->mouse_ly = .5;
+	ctx->locked = 0;
 }
 
 void			init_window(t_mlx_context *ctx)

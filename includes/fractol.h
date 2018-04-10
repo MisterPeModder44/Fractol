@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 08:20:17 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 17:56:21 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/10 12:45:37 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ typedef struct		s_mlx_context
 	double			mouse_ay;
 	double			mouse_px;
 	double			mouse_py;
+	double			mouse_lx;
+	double			mouse_ly;
+	int				locked;
 }					t_mlx_context;
 
 typedef struct		s_window
