@@ -6,12 +6,12 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/20 17:09:08 by yguaye            #+#    #+#             */
-/*   Updated: 2018/02/08 13:47:58 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/10 15:35:01 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <debug.h>
+#include <libft_base/memory.h>
 #include "palette.h"
 
 t_bool				val_palette(t_list *colors, uint32_t size, uint32_t mhue)
@@ -32,14 +32,14 @@ t_bool				val_palette(t_list *colors, uint32_t size, uint32_t mhue)
 
 static t_bool		alloc_colors(t_palette *pal)
 {
-	if (!(pal->reds = (uint8_t *)malloc(sizeof(uint8_t) * pal->size)))
+	if (!(pal->reds = (uint8_t *)ft_memalloc(sizeof(uint8_t) * pal->size)))
 		return (FALSE);
-	if (!(pal->greens = (uint8_t *)malloc(sizeof(uint8_t) * pal->size)))
+	if (!(pal->greens = (uint8_t *)ft_memalloc(sizeof(uint8_t) * pal->size)))
 	{
 		free(pal->reds);
 		return (FALSE);
 	}
-	if (!(pal->blues = (uint8_t *)malloc(sizeof(uint8_t) * pal->size)))
+	if (!(pal->blues = (uint8_t *)ft_memalloc(sizeof(uint8_t) * pal->size)))
 	{
 		free(pal->reds);
 		free(pal->greens);
@@ -88,7 +88,7 @@ t_palette			*make_palette(t_list *colors, uint32_t size, uint32_t mhue)
 {
 	t_palette		*pal;
 
-	if (!(pal = (t_palette *)malloc(sizeof(t_palette))))
+	if (!(pal = (t_palette *)ft_memalloc(sizeof(t_palette))))
 		return (NULL);
 	pal->size = size;
 	pal->max_hue = mhue;
