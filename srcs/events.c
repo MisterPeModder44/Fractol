@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 10:54:10 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/10 12:56:28 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/10 16:12:19 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ static void	zoom(t_mlx_context *ctx, t_bool zoom_in,
 	double		distx;
 	double		disty;
 
-	distx = (frac->x_max - frac->x_min) / 2.;
-	disty = (frac->y_max - frac->y_min) / 2.;
+	distx = (frac->x_max - frac->x_min) / 50.;
+	disty = (frac->y_max - frac->y_min) / 50.;
 	if (zoom_in)
 	{
-		frac->x_min += distx / 2.;
-		frac->y_min += disty / 2.;
-		frac->x_max -= distx / 2.;
-		frac->y_max -= disty / 2.;
+		frac->x_min += distx;
+		frac->y_min += disty;
+		frac->x_max -= distx;
+		frac->y_max -= disty;
 	}
 	else
 	{
