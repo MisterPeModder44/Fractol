@@ -6,7 +6,7 @@
 /*   By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 08:30:55 by yguaye            #+#    #+#             */
-/*   Updated: 2018/04/09 18:19:05 by yguaye           ###   ########.fr       */
+/*   Updated: 2018/04/10 13:05:09 by yguaye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,19 @@ static char			*get_fractal_name(t_window *win)
 		return ("burning ship");
 }
 
+static void			put_extra_infos(t_mlx_context *ctx, t_window *win)
+{
+	mlx_string_put(ctx->mlx, ctx->win, 0, 54, 0x00FFFFFF, "Press ");
+	mlx_string_put(ctx->mlx, ctx->win, 60, 54, 0x00CC9900, "[ or ]");
+	mlx_string_put(ctx->mlx, ctx->win, 120, 54, 0x00FFFFFF, " to change "
+			"iteration level");
+	if (((t_fractal *)win->extra)->type != JULIA)
+		return;
+	mlx_string_put(ctx->mlx, ctx->win, 0, 72, 0x00FFFFFF, "Press ");
+	mlx_string_put(ctx->mlx, ctx->win, 60, 72, 0x00CC9900, "L");
+	mlx_string_put(ctx->mlx, ctx->win, 70, 72, 0x00FFFFFF, " to lock fractal");
+}
+
 void				put_infos(t_mlx_context *ctx, t_window *win)
 {
 	char			*frac_name;
@@ -67,8 +80,5 @@ void				put_infos(t_mlx_context *ctx, t_window *win)
 	mlx_string_put(ctx->mlx, ctx->win, 0, 36, 0x00FFFFFF, "Press ");
 	mlx_string_put(ctx->mlx, ctx->win, 60, 36, 0x00CC9900, "ESC");
 	mlx_string_put(ctx->mlx, ctx->win, 90, 36, 0x00FFFFFF, " to quit");
-	mlx_string_put(ctx->mlx, ctx->win, 0, 54, 0x00FFFFFF, "Press ");
-	mlx_string_put(ctx->mlx, ctx->win, 60, 54, 0x00CC9900, "[ or ]");
-	mlx_string_put(ctx->mlx, ctx->win, 120, 54, 0x00FFFFFF, " to change "
-			"iteration level");
+	put_extra_infos(ctx, win);
 }
