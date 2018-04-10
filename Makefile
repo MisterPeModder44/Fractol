@@ -57,7 +57,7 @@ LIBS := -lm -L$(MLX_PATH) -lmlx -Llibft -lft
 
 CC = /usr/bin/gcc
 CLC = /System/Library/Frameworks/OpenCL.framework/Libraries/openclc
-CFLAGS = -g -Wall -Werror -Wextra -O3
+CFLAGS = -g -Wall -Werror -Wextra
 FRAMEWORKS = -framework OpenCL -framework OpenGL -framework AppKit
 CPPFLAGS = -I$(INC_PATH) -Ilibft/includes -I$(MLX_PATH)
 RM = /bin/rm -f
